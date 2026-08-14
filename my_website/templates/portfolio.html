@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}作品集 - 我的网站{% endblock %}
+
+{% block content %}
+<div class="portfolio-header">
+    <h1>个人作品集</h1>
+    <p>PORTFOLIO</p>
+
+    <!-- 顶部分类快捷导航（点击可平滑滚动到对应分类） -->
+    <div class="category-tabs">
+    {% for group in portfolio_data %}
+        <a href="#{{ group.category_id }}" class="tab-btn">{{ group.category_name }}</a>
+    {% endfor %}
+    </div>
+</div>
+
+<!-- 分分类展示区 -->
+{% for group in portfolio_data %}
+    <section id="{{ group.category_id }}" class="portfolio-section">
+        <h2 class="section-title">
+            {{ group.category_name }}
+            <span class="badge">{{ group.count_text }}</span>
+        </h2>
+
+        <div class="image-grid">
+            {% for img in group.images %}
+                <div class="art-card" onclick="openLightbox('{{ url_for('static', filename=img.src) }}', '{{ img.title }}')">
+                    <div class="img-wrapper">
+                        <img src="{{ url_for('static', filename=img.src) }}" alt="{{ img.title }}" loading="lazy">
+                        <div class="overlay">
+                            <span>点击放大查看</span>
+                        </div>
+                    </div>
+                    <div class="art-info">
+                        <h4>{{ img.title }}</h4>
+                        <p>{{ img.desc }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endfor %}
+
+<!-- 大图预览模态框 (Lightbox) -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <span class="close-btn">&times;</span>
+    <img id="lightbox-img" src="" alt="大图预览">
+    <div id="lightbox-caption"></div>
+</div>
+
+<script>
+    function openLightbox(src, title) {
+        document.getElementById('lightbox-img').src = src;
+        document.getElementById('lightbox-caption').innerText = title;
+        document.getElementById('lightbox').style.display = 'flex';
+    }
+
+    function closeLightbox() {
+        document.getElementById('lightbox').style.display = 'none';
+    }
+</script>
+{% endblock %}

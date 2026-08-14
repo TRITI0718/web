@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wang Qingyang - Portfolio & Resume</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ================= 1. 首屏 (莫奈油画视觉区) ================= -->
+    <header class="hero-section">
+        <div class="hero-bg-wrapper">
+            <img src="{{ url_for('static', filename='images/bg.jpg') }}" alt="Monet Painting" class="hero-bg-img">
+            <div class="hero-blur-overlay"></div>
+        </div>
+
+        <nav class="hero-nav">
+            <a href="#about" class="hero-link">About</a>
+            <a href="#portfolio" class="hero-link">Portfolio</a>
+            <a href="#laboratory" class="hero-link">Laboratory</a>
+        </nav>
+
+        <div class="hero-keywords">
+            <span>Design</span>
+            <span>Drawing</span>
+            <span>Physics</span>
+        </div>
+
+        <div class="hero-footer-text">
+            <h1 class="author-name">Wang Qingyang</h1>
+            <p class="author-poem">我与丹青两幻身，世间流转会成尘</p>
+        </div>
+    </header>
+
+    <!-- ================= 2. 下滑页面内容 ================= -->
+    <main class="main-content">
+
+        <!-- 2.1 关于我 (完整简历内容) -->
+        <section id="about" class="content-section">
+            <div class="section-container">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <h1>王清扬</h1>
+                        <p class="tagline">浙江大学物理学本科在读 ｜</p>
+                        <div class="job-badge">期望方向：测试/设计/原画 </div>
+                        <div class="contact-chips">
+                            <span class="chip">📞 19883130299</span>
+                            <span class="chip">✉ 2974468202@qq.com</span>
+                            <span class="chip">📍 浙江 杭州</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-grid">
+                    <div class="left-column">
+                        <div class="info-block">
+                            <h3>自我评价与优势</h3>
+                            <p class="bio-text">
+                                美术与理工科背景结合，具备良好的<strong>逻辑思维与快速学习能力</strong>。对游戏及动画角色美术有长期投入与明确的职业规划，多平台创作者（粉丝3000+）。执行力强，能够快速根据团队反馈精准调整画面表现。
+                            </p>
+                        </div>
+
+                        <div class="info-block">
+                            <h3>教育背景</h3>
+                            <div class="time-header">
+                                <strong>浙江大学</strong>
+                                <span class="date">2023.09 – 2027.06</span>
+                            </div>
+                            <p class="sub-text">物理学 ｜ 本科在读</p>
+                            <ul class="detail-list">
+                                <li>GPA：</li>
+                                <li>英语能力：CET-4 / CET-6 均 600+ 分</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="right-column">
+                        <div class="info-block">
+                            <h3>专业技能</h3>
+                            <div class="skill-group">
+                                <span class="group-title">设计软件</span>
+                                <div class="tech-tags">
+                                    <span class="tag">Photoshop</span>
+                                    <span class="tag">Word、Excel、Powerpoint</span>
+                                    <span class="tag">SAI2</span>
+                                    <span class="tag">Indesign</span>
+                                    <span class="tag">Procreate</span>
+                                </div>
+                            </div>
+                            <div class="skill-group">
+                                <span class="group-title">美术核心能力</span>
+                                <div class="tech-tags">
+                                    <span class="tag highlight">角色设定</span>
+                                    <span class="tag highlight">人体结构</span>
+                                    <span class="tag highlight">服装设计</span>
+                                    <span class="tag highlight">色彩搭配</span>
+                                </div>
+                            </div>
+                            <div class="skill-group">
+                                <span class="group-title">编程语言</span>
+                                <div class="tech-tags">
+                                    <span class="tag">Python</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-block">
+                            <h3>修读课程</h3>
+                            <div class="process-steps">
+                                <div class="step"><span class="step-num">01</span><span class="step-text">专业基础课程：力学、电动力学、理论力学、量子力学</span></div>
+                                <div class="step"><span class="step-num">02</span><span class="step-text">物理课程：数学物理方法、计算物理、固体物理、半导体物理</span></div>
+                                <div class="step"><span class="step-num">03</span><span class="step-text">数学课程：微积分、线性代数</span></div>
+                                <div class="step"><span class="step-num">04</span><span class="step-text">化学课程：普通化学、有机化学、分析化学</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2.2 作品集 (四大分类 + 无括号分类按钮 + 放大预览) -->
+        <section id="portfolio" class="content-section">
+            <div class="section-container">
+                <div class="portfolio-header">
+                    <h2 class="section-title">PORTFOLIO</h2>
+
+
+                    <!-- 分类切换标签 (去掉了无谓的括号) -->
+                    <div class="category-tabs">
+                        {% for group in portfolio_data %}
+                            <a href="#{{ group.category_id }}" class="tab-btn">{{ group.category_name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- 四大分类图片列表 -->
+                {% for group in portfolio_data %}
+                    <div id="{{ group.category_id }}" class="portfolio-group">
+                        <h3 class="group-title-text">{{ group.category_name }}</h3>
+                        <div class="image-grid">
+
+                            {% for img in group.images %}
+                                <div class="art-card" onclick="openLightbox('{{ url_for('static', filename=img.src) }}', '{{ img.title }}')">
+                                    <div class="img-wrapper">
+                                        <img src="{{ url_for('static', filename=img.src) }}" alt="作品" loading="lazy">
+                                        <div class="overlay">
+                                            <span>点击放大查看</span>
+                                        </div>
+                                    </div>
+                                    <div class="art-info">
+                                        <h4>{{ img.title }}</h4>
+                                        <p>{{ img.desc }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- 2.3 实验室 -->
+        <section id="laboratory" class="content-section">
+            <div class="section-container">
+                <h2 class="section-title">LABORATORY</h2>
+                <div class="lab-box">
+                    <h3>实验室经历</h3>
+                    <p>待补充</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 大图预览 Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close-btn">&times;</span>
+        <img id="lightbox-img" src="" alt="预览">
+        <div id="lightbox-caption"></div>
+    </div>
+
+    <script>
+        function openLightbox(src, title) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox-caption').innerText = title;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
