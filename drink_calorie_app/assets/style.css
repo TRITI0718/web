@@ -1,0 +1,1149 @@
+/* ============================================================
+   0. 全局字体与基础变量
+============================================================ */
+
+:root {
+    --bg-main: #FFFDF5;
+    --bg-card: #FFFEF8;
+    --bg-soft: #F5F1D8;
+
+    --text-main: #34382B;
+    --text-secondary: #666954;
+    --text-muted: #8A8B76;
+
+    --border-light: #E6E0BE;
+    --border-hover: #C9C68F;
+
+    --accent: #657A2E;
+    --accent-soft: rgba(101, 122, 46, 0.14);
+
+    --success-bg: #EDF3D5;
+    --success-text: #506321;
+
+    --warning-bg: #FFF0B8;
+    --warning-text: #765B13;
+
+    --neutral-bg: #F1ECD4;
+    --neutral-text: #74745F;
+
+    --shadow-card:
+        0 6px 22px rgba(87, 78, 34, 0.07);
+
+    --shadow-hover:
+        0 12px 34px rgba(87, 78, 34, 0.11);
+
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 18px;
+    --radius-pill: 999px;
+}
+
+
+/* ============================================================
+   1. 页面整体
+============================================================ */
+
+html,
+body,
+[class*="css"] {
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "PingFang SC",
+        "Hiragino Sans GB",
+        "Microsoft YaHei",
+        sans-serif;
+}
+
+
+.stApp {
+    background:
+        radial-gradient(circle at 90% 8%, rgba(221, 231, 165, 0.48), transparent 28%),
+        radial-gradient(circle at 12% 2%, rgba(255, 229, 142, 0.42), transparent 24%),
+        linear-gradient(180deg, #FFFBE9 0%, #FFFDF6 38%, #FAF8EB 100%);
+}
+
+
+.block-container {
+    max-width: 1400px;
+    padding-top: 1.5rem;
+    padding-bottom: 5rem;
+}
+
+
+/* ============================================================
+   1.1 品牌与页面头图
+============================================================ */
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 1.45rem;
+    padding: 14px;
+    border: 1px solid rgba(116, 129, 53, 0.18);
+    border-radius: 16px;
+    background: rgba(255, 252, 224, 0.72);
+}
+
+.sidebar-brand-icon {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #F3D874, #D7DF87);
+    color: #46521F;
+    font-size: 16px;
+    font-weight: 800;
+    box-shadow: 0 5px 14px rgba(112, 118, 44, 0.15);
+}
+
+.sidebar-brand strong,
+.sidebar-brand span {
+    display: block;
+}
+
+.sidebar-brand strong {
+    color: var(--text-main);
+    font-size: 15px;
+    letter-spacing: .02em;
+}
+
+.sidebar-brand span {
+    margin-top: 2px;
+    color: var(--text-muted);
+    font-size: 11.5px;
+}
+
+.page-hero {
+    position: relative;
+    overflow: hidden;
+    margin: 0 0 1.3rem;
+    padding: 30px 34px;
+    border: 1px solid rgba(190, 183, 109, 0.42);
+    border-radius: 24px;
+    background:
+        radial-gradient(circle at 88% 22%, rgba(183, 202, 104, 0.52), transparent 24%),
+        linear-gradient(135deg, rgba(255, 238, 166, 0.82), rgba(244, 241, 207, 0.9));
+    box-shadow: 0 12px 32px rgba(104, 91, 36, 0.08);
+}
+
+.page-hero::after {
+    content: "";
+    position: absolute;
+    right: 7%;
+    bottom: -50px;
+    width: 150px;
+    height: 150px;
+    border: 26px solid rgba(255, 253, 225, 0.36);
+    border-radius: 50%;
+}
+
+.page-hero-manage {
+    background:
+        radial-gradient(circle at 88% 22%, rgba(245, 211, 103, 0.46), transparent 24%),
+        linear-gradient(135deg, rgba(235, 241, 194, 0.9), rgba(255, 247, 210, 0.92));
+}
+
+.page-hero .eyebrow {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: #5E702A;
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: .12em;
+}
+
+.page-hero h1 {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 8px !important;
+    color: #303624;
+}
+
+.page-hero p {
+    position: relative;
+    z-index: 1;
+    max-width: 650px;
+    margin: 0;
+    color: #65684D;
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   2. 标题
+============================================================ */
+
+h1 {
+    color: var(--text-main);
+    font-size: 2.15rem !important;
+    line-height: 1.2 !important;
+    font-weight: 780 !important;
+    letter-spacing: -0.035em;
+    margin-bottom: 0.35rem !important;
+}
+
+
+h2 {
+    color: var(--text-main);
+    font-weight: 740 !important;
+    letter-spacing: -0.025em;
+}
+
+
+h3 {
+    color: var(--text-main);
+    font-weight: 700 !important;
+    letter-spacing: -0.018em;
+}
+
+
+h4,
+h5,
+h6 {
+    color: var(--text-main);
+}
+
+
+p {
+    color: var(--text-secondary);
+}
+
+
+/* ============================================================
+   3. Sidebar
+============================================================ */
+
+section[data-testid="stSidebar"] {
+    background: rgba(247, 242, 217, 0.98);
+    border-right: 1px solid var(--border-light);
+}
+
+
+section[data-testid="stSidebar"] > div {
+    padding-top: 1.25rem;
+}
+
+
+section[data-testid="stSidebar"] label {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+
+section[data-testid="stSidebar"] [role="radiogroup"] {
+    gap: 0.35rem;
+}
+
+
+/* ============================================================
+   4. 输入框
+============================================================ */
+
+div[data-baseweb="input"] > div {
+    min-height: 44px;
+    border-radius: 12px !important;
+    border: 1px solid var(--border-light) !important;
+    background: #FFFFFF !important;
+    box-shadow: none !important;
+    transition:
+        border-color 0.16s ease,
+        box-shadow 0.16s ease,
+        background 0.16s ease;
+}
+
+
+div[data-baseweb="input"] > div:hover {
+    border-color: var(--border-hover) !important;
+}
+
+
+div[data-baseweb="input"] > div:focus-within {
+    border-color: var(--accent) !important;
+    box-shadow:
+        0 0 0 3px
+        var(--accent-soft)
+        !important;
+}
+
+
+input {
+    color: var(--text-main) !important;
+}
+
+
+/* ============================================================
+   5. Selectbox
+============================================================ */
+
+div[data-baseweb="select"] > div {
+    min-height: 44px;
+    border-radius: 12px !important;
+    border: 1px solid var(--border-light) !important;
+    background: #FFFFFF !important;
+    box-shadow: none !important;
+    transition:
+        border-color 0.16s ease,
+        box-shadow 0.16s ease;
+}
+
+
+div[data-baseweb="select"] > div:hover {
+    border-color: var(--border-hover) !important;
+}
+
+
+div[data-baseweb="select"] > div:focus-within {
+    border-color: var(--accent) !important;
+    box-shadow:
+        0 0 0 3px
+        var(--accent-soft)
+        !important;
+}
+
+
+/* ============================================================
+   6. Textarea
+============================================================ */
+
+textarea {
+    border-radius: 12px !important;
+    border: 1px solid var(--border-light) !important;
+    background: #FFFFFF !important;
+    color: var(--text-main) !important;
+}
+
+
+textarea:focus {
+    border-color: var(--accent) !important;
+    box-shadow:
+        0 0 0 3px
+        var(--accent-soft)
+        !important;
+}
+
+
+/* ============================================================
+   7. Button
+============================================================ */
+
+.stButton > button,
+.stFormSubmitButton > button,
+.stDownloadButton > button {
+    min-height: 42px;
+    border-radius: 12px !important;
+
+    font-weight: 650 !important;
+    letter-spacing: -0.01em;
+
+    border: 1px solid #E1E4EA;
+
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.14s ease,
+        border-color 0.14s ease,
+        filter 0.14s ease;
+}
+
+
+.stButton > button:hover,
+.stFormSubmitButton > button:hover,
+.stDownloadButton > button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 18px rgba(25, 31, 43, 0.08);
+
+    border-color: #C8CED9;
+}
+
+
+.stButton > button:active,
+.stFormSubmitButton > button:active,
+.stDownloadButton > button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   8. Primary Button
+============================================================ */
+
+button[kind="primary"] {
+    border: none !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #70853A 0%,
+            #586F27 100%
+        )
+        !important;
+
+    color: #FFFFFF !important;
+
+    box-shadow:
+        0 5px 16px rgba(88, 111, 39, 0.22);
+}
+
+
+button[kind="primary"]:hover {
+    filter: brightness(1.03);
+
+    box-shadow:
+        0 8px 22px rgba(88, 111, 39, 0.28);
+}
+
+
+/* ============================================================
+   9. Metric
+============================================================ */
+
+div[data-testid="stMetric"] {
+    background:
+        rgba(255, 253, 238, 0.96);
+
+    border:
+        1px solid var(--border-light);
+
+    border-radius:
+        var(--radius-lg);
+
+    padding:
+        16px 18px;
+
+    box-shadow:
+        var(--shadow-card);
+}
+
+
+div[data-testid="stMetricLabel"] {
+    color:
+        var(--text-muted);
+
+    font-weight:
+        560;
+}
+
+
+div[data-testid="stMetricValue"] {
+    color:
+        var(--text-main);
+
+    font-weight:
+        760;
+
+    letter-spacing:
+        -0.025em;
+}
+
+
+/* ============================================================
+   10. Radio
+============================================================ */
+
+div[role="radiogroup"] {
+    gap: 0.55rem;
+}
+
+
+div[role="radiogroup"] label {
+    border-radius:
+        var(--radius-pill);
+
+    transition:
+        background 0.14s ease;
+}
+
+
+/* ============================================================
+   11. Checkbox
+============================================================ */
+
+[data-testid="stCheckbox"] label {
+    color: var(--text-secondary);
+}
+
+
+/* ============================================================
+   12. Divider
+============================================================ */
+
+hr {
+    border: none !important;
+
+    border-top:
+        1px solid var(--border-light)
+        !important;
+
+    margin-top:
+        1.8rem !important;
+
+    margin-bottom:
+        1.8rem !important;
+}
+
+
+/* ============================================================
+   13. 饮品卡片
+============================================================ */
+
+.drink-card {
+    margin-bottom:
+        16px;
+
+    padding:
+        22px 24px;
+
+    border-radius:
+        var(--radius-lg);
+
+    background:
+        rgba(255, 254, 248, 0.97);
+
+    border:
+        1px solid var(--border-light);
+
+    box-shadow:
+        var(--shadow-card);
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease;
+}
+
+
+.drink-card:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        var(--shadow-hover);
+
+    border-color:
+        var(--border-hover);
+}
+
+
+/* ============================================================
+   14. 饮品卡片头部
+============================================================ */
+
+.drink-header {
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        flex-start;
+
+    gap:
+        24px;
+}
+
+
+.drink-left {
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    gap:
+        14px;
+}
+
+
+/* ============================================================
+   15. 排名
+============================================================ */
+
+.drink-rank {
+    min-width:
+        42px;
+
+    height:
+        42px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border-radius:
+        12px;
+
+    background:
+        #F2EECF;
+
+    border:
+        1px solid #E3DBA7;
+
+    color:
+        #73764E;
+
+    font-size:
+        14px;
+
+    font-weight:
+        760;
+}
+
+
+/* ============================================================
+   16. 商品名
+============================================================ */
+
+.drink-name {
+    color:
+        var(--text-main);
+
+    font-size:
+        20px;
+
+    line-height:
+        1.35;
+
+    font-weight:
+        760;
+
+    letter-spacing:
+        -0.018em;
+}
+
+
+/* ============================================================
+   17. 商品信息
+============================================================ */
+
+.drink-meta {
+    margin-top:
+        5px;
+
+    color:
+        #8B919C;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.4;
+}
+
+
+/* ============================================================
+   18. 大营养数值
+============================================================ */
+
+.metric-big {
+    text-align:
+        right;
+
+    white-space:
+        nowrap;
+
+    font-size:
+        27px;
+
+    line-height:
+        1.2;
+
+    font-weight:
+        820;
+
+    letter-spacing:
+        -0.035em;
+}
+
+
+/* ============================================================
+   19. Nutrition Chips
+============================================================ */
+
+.nutrition-row {
+    display:
+        flex;
+
+    gap:
+        8px;
+
+    flex-wrap:
+        wrap;
+
+    margin-top:
+        18px;
+
+    margin-bottom:
+        16px;
+}
+
+
+.nutrition-chip {
+    padding:
+        7px 10px;
+
+    border-radius:
+        10px;
+
+    background:
+        #F4F0D8;
+
+    border:
+        1px solid #E7DFB9;
+
+    color:
+        #595C44;
+
+    font-size:
+        12.5px;
+
+    line-height:
+        1.3;
+}
+
+
+/* ============================================================
+   20. Source Badge
+============================================================ */
+
+.source-badge {
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    margin-top:
+        9px;
+
+    padding:
+        4px 9px;
+
+    border-radius:
+        var(--radius-pill);
+
+    font-size:
+        11.5px;
+
+    line-height:
+        1.3;
+
+    font-weight:
+        620;
+}
+
+
+.source-official {
+    background:
+        var(--success-bg);
+
+    color:
+        var(--success-text);
+}
+
+
+.source-third {
+    background:
+        var(--warning-bg);
+
+    color:
+        var(--warning-text);
+}
+
+
+.source-other {
+    background:
+        var(--neutral-bg);
+
+    color:
+        var(--neutral-text);
+}
+
+
+/* ============================================================
+   21. 热量条
+============================================================ */
+
+.bar-background {
+    width:
+        100%;
+
+    height:
+        13px;
+
+    overflow:
+        hidden;
+
+    border-radius:
+        var(--radius-pill);
+
+    background:
+        #ECE8CB;
+
+    box-shadow:
+        inset
+        0 1px 2px
+        rgba(0, 0, 0, 0.025);
+}
+
+
+/* ============================================================
+   22. 原料
+============================================================ */
+
+.ingredients {
+    margin-top:
+        12px;
+
+    color:
+        #898F9A;
+
+    font-size:
+        12.5px;
+
+    line-height:
+        1.6;
+}
+
+
+/* ============================================================
+   23. 来源信息
+============================================================ */
+
+.source-info {
+    margin-top:
+        10px;
+
+    color:
+        #9A9FA8;
+
+    font-size:
+        11.5px;
+
+    line-height:
+        1.6;
+}
+
+
+/* ============================================================
+   24. 商品管理提示
+============================================================ */
+
+.manage-note {
+    margin-bottom:
+        18px;
+
+    padding:
+        14px 16px;
+
+    border:
+        1px solid #DCE2AE;
+
+    border-radius:
+        14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #F4F5D9 0%,
+            #FFF5CE 100%
+        );
+
+    color:
+        #62664D;
+
+    font-size:
+        13.5px;
+
+    line-height:
+        1.6;
+}
+
+
+/* ============================================================
+   25. DataFrame / DataEditor
+============================================================ */
+
+div[data-testid="stDataFrame"],
+div[data-testid="stDataEditor"] {
+    overflow:
+        hidden;
+
+    border:
+        1px solid var(--border-light);
+
+    border-radius:
+        14px;
+
+    box-shadow:
+        0 2px 10px rgba(25, 31, 43, 0.025);
+}
+
+
+/* ============================================================
+   26. Form
+============================================================ */
+
+[data-testid="stForm"] {
+    border:
+        1px solid var(--border-light);
+
+    border-radius:
+        var(--radius-lg);
+
+    background:
+        rgba(255, 253, 238, 0.82);
+
+    padding:
+        1.1rem;
+
+    box-shadow:
+        0 3px 14px rgba(25, 31, 43, 0.025);
+}
+
+
+/* ============================================================
+   27. Alerts
+============================================================ */
+
+div[data-testid="stAlert"] {
+    border-radius:
+        13px;
+
+    border-width:
+        1px;
+}
+
+
+/* ============================================================
+   28. Expander
+============================================================ */
+
+details {
+    border-radius:
+        14px !important;
+
+    border-color:
+        var(--border-light) !important;
+
+    background:
+        rgba(255, 255, 255, 0.7);
+}
+
+
+details > summary {
+    font-weight:
+        600;
+}
+
+
+/* ============================================================
+   29. Caption
+============================================================ */
+
+[data-testid="stCaptionContainer"] {
+    color:
+        var(--text-muted);
+}
+
+
+/* ============================================================
+   30. Spinner
+============================================================ */
+
+[data-testid="stSpinner"] {
+    color:
+        var(--text-secondary);
+}
+
+
+/* ============================================================
+   31. Tooltip
+============================================================ */
+
+[data-baseweb="tooltip"] {
+    border-radius:
+        10px !important;
+}
+
+
+/* ============================================================
+   32. Popover / 下拉菜单
+============================================================ */
+
+div[data-baseweb="popover"] > div {
+    border-radius:
+        12px !important;
+
+    border:
+        1px solid var(--border-light);
+
+    box-shadow:
+        0 12px 32px rgba(20, 25, 35, 0.12);
+}
+
+
+/* ============================================================
+   33. Select 下拉选项
+============================================================ */
+
+li[role="option"] {
+    border-radius:
+        8px;
+
+    margin:
+        2px 4px;
+}
+
+
+/* ============================================================
+   34. Code / 日志
+============================================================ */
+
+code {
+    border-radius:
+        8px;
+}
+
+
+pre {
+    border-radius:
+        14px !important;
+
+    border:
+        1px solid var(--border-light);
+
+    background:
+        #F7F8FA !important;
+}
+
+
+/* ============================================================
+   35. Scrollbar
+============================================================ */
+
+::-webkit-scrollbar {
+    width:
+        9px;
+
+    height:
+        9px;
+}
+
+
+::-webkit-scrollbar-track {
+    background:
+        transparent;
+}
+
+
+::-webkit-scrollbar-thumb {
+    border-radius:
+        var(--radius-pill);
+
+    background:
+        #D4D8DF;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background:
+        #BBC1CB;
+}
+
+
+/* ============================================================
+   36. 选中文字
+============================================================ */
+
+::selection {
+    background:
+        rgba(108, 124, 255, 0.18);
+}
+
+
+/* ============================================================
+   37. 响应式
+============================================================ */
+
+@media (
+    max-width: 900px
+) {
+
+    .block-container {
+        padding-left:
+            1rem;
+
+        padding-right:
+            1rem;
+    }
+
+
+    .drink-card {
+        padding:
+            18px;
+    }
+
+
+    .drink-header {
+        flex-direction:
+            column;
+
+        gap:
+            14px;
+    }
+
+
+    .metric-big {
+        text-align:
+            left;
+
+        font-size:
+            24px;
+    }
+
+
+    .drink-name {
+        font-size:
+            18px;
+    }
+
+
+    .nutrition-row {
+        gap:
+            6px;
+    }
+
+}
+
+
+/* ============================================================
+   38. 深色模式基础兼容
+============================================================ */
+
+@media (
+    prefers-color-scheme: dark
+) {
+
+    /*
+    如果你当前 Streamlit 固定使用浅色模式，
+    这里不会产生明显影响。
+
+    以后如果想正式做 Dark Mode，
+    可以单独扩展这一部分。
+    */
+
+}
