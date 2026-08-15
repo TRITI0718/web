@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: wqy-portfolio
+    runtime: python
+    plan: free
+    rootDir: my_website
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    autoDeploy: true
+
+  - type: web
+    name: drinkcal
+    runtime: python
+    plan: free
+    rootDir: drink_calorie_app
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.address 0.0.0.0 --server.port $PORT --server.headless true
+    autoDeploy: true
