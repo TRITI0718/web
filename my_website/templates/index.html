@@ -41,6 +41,11 @@
 
         <!-- 2.1 关于我 (完整简历内容) -->
         <section id="about" class="content-section">
+            <nav class="resume-side-nav" aria-label="页面导航">
+                <a href="#about" class="is-current" aria-current="location">About</a>
+                <a href="#portfolio">Portfolio</a>
+                <a href="#laboratory">Laboratory</a>
+            </nav>
             <div class="section-container">
                 <div class="profile-card">
                     <div class="profile-header">
@@ -124,6 +129,11 @@
 
         <!-- 2.2 作品集 (四大分类 + 无括号分类按钮 + 放大预览) -->
         <section id="portfolio" class="content-section">
+            <nav class="resume-side-nav" aria-label="页面导航">
+                <a href="#about">About</a>
+                <a href="#portfolio" class="is-current" aria-current="location">Portfolio</a>
+                <a href="#laboratory">Laboratory</a>
+            </nav>
             <div class="section-container">
                 <div class="portfolio-header">
                     <h2 class="section-title">PORTFOLIO</h2>
@@ -141,21 +151,14 @@
                 {% for group in portfolio_data %}
                     <div id="{{ group.category_id }}" class="portfolio-group">
                         <h3 class="group-title-text">{{ group.category_name }}</h3>
-                        <div class="image-grid">
+                        <div class="image-grid" data-gallery="{{ group.category_id }}">
 
                             {% for img in group.images %}
-                                <div class="art-card" onclick="openLightbox('{{ url_for('static', filename=img.src) }}', '{{ img.title }}')">
+                                <button class="art-card" type="button" aria-label="{{ img.title }}" onclick="openLightbox('{{ group.category_id }}', {{ loop.index0 }})">
                                     <div class="img-wrapper">
                                         <img src="{{ url_for('static', filename=img.src) }}" alt="作品" loading="lazy">
-                                        <div class="overlay">
-                                            <span>点击放大查看</span>
-                                        </div>
                                     </div>
-                                    <div class="art-info">
-                                        <h4>{{ img.title }}</h4>
-                                        <p>{{ img.desc }}</p>
-                                    </div>
-                                </div>
+                                </button>
                             {% endfor %}
                         </div>
                     </div>
@@ -165,6 +168,11 @@
 
         <!-- 2.3 实验室 -->
         <section id="laboratory" class="content-section">
+            <nav class="resume-side-nav" aria-label="页面导航">
+                <a href="#about">About</a>
+                <a href="#portfolio">Portfolio</a>
+                <a href="#laboratory" class="is-current" aria-current="location">Laboratory</a>
+            </nav>
             <div class="section-container">
                 <h2 class="section-title">LABORATORY</h2>
                 <div class="lab-box">
@@ -177,21 +185,90 @@
     </main>
 
     <!-- 大图预览 Lightbox -->
-    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-        <span class="close-btn">&times;</span>
+    <div id="lightbox" class="lightbox" onclick="if (event.target === this) closeLightbox()">
+        <button class="close-btn" type="button" aria-label="关闭" onclick="closeLightbox()">&times;</button>
+        <button class="lightbox-nav lightbox-prev" type="button" aria-label="上一张" onclick="event.stopPropagation(); changeLightbox(-1)">&#8249;</button>
         <img id="lightbox-img" src="" alt="预览">
         <div id="lightbox-caption"></div>
+        <button class="lightbox-nav lightbox-next" type="button" aria-label="下一张" onclick="event.stopPropagation(); changeLightbox(1)">&#8250;</button>
     </div>
 
     <script>
-        function openLightbox(src, title) {
-            document.getElementById('lightbox-img').src = src;
-            document.getElementById('lightbox-caption').innerText = title;
-            document.getElementById('lightbox').style.display = 'flex';
+        const portfolioGalleries = {
+            {% for group in portfolio_data %}
+            "{{ group.category_id }}": [
+                {% for img in group.images %}
+                {
+                    src: "{{ url_for('static', filename=img.src) }}",
+                    title: "{{ img.title }}"
+                }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ]{% if not loop.last %},{% endif %}
+            {% endfor %}
+        };
+
+        let activeGallery = '';
+        let activeImageIndex = 0;
+        let touchStartX = null;
+
+        function renderLightboxImage() {
+            const item = portfolioGalleries[activeGallery][activeImageIndex];
+            document.getElementById('lightbox-img').src = item.src;
+            document.getElementById('lightbox-caption').innerText = item.title;
         }
+
+        function openLightbox(gallery, index) {
+            activeGallery = gallery;
+            activeImageIndex = index;
+            renderLightboxImage();
+            document.getElementById('lightbox').classList.add('is-open');
+            document.body.classList.add('lightbox-open');
+        }
+
         function closeLightbox() {
-            document.getElementById('lightbox').style.display = 'none';
+            document.getElementById('lightbox').classList.remove('is-open');
+            document.body.classList.remove('lightbox-open');
         }
+
+        function changeLightbox(direction) {
+            const gallery = portfolioGalleries[activeGallery];
+            if (!gallery || gallery.length < 2) return;
+            activeImageIndex = (activeImageIndex + direction + gallery.length) % gallery.length;
+            renderLightboxImage();
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') closeLightbox();
+            if (!document.getElementById('lightbox').classList.contains('is-open')) return;
+            if (event.key === 'ArrowLeft') changeLightbox(-1);
+            if (event.key === 'ArrowRight') changeLightbox(1);
+        });
+
+        document.getElementById('lightbox-img').addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+
+        document.getElementById('lightbox').addEventListener('touchstart', function(event) {
+            touchStartX = event.changedTouches[0].clientX;
+        }, { passive: true });
+
+        document.getElementById('lightbox').addEventListener('touchend', function(event) {
+            if (touchStartX === null) return;
+            const distance = event.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(distance) > 45) changeLightbox(distance > 0 ? -1 : 1);
+            touchStartX = null;
+        }, { passive: true });
+
+        document.addEventListener('pointerdown', function(event) {
+            if (event.button !== 0 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            const ripple = document.createElement('span');
+            ripple.className = 'click-ripple';
+            ripple.style.left = `${event.clientX}px`;
+            ripple.style.top = `${event.clientY}px`;
+            document.body.appendChild(ripple);
+            ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
+        });
     </script>
 </body>
 </html>

@@ -9,6 +9,45 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", sans-serif;
     background-color: #f7f9fb;
     color: #2c3e50;
+    --resume-glass-text: #92a5ca;
+}
+
+/* 全站点击水波纹 */
+.click-ripple {
+    position: fixed;
+    z-index: 10000;
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid rgba(121, 148, 194, 0.7);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.2);
+    background: radial-gradient(
+        circle,
+        rgba(219, 232, 247, 0.38) 0%,
+        rgba(146, 165, 202, 0.2) 44%,
+        rgba(146, 165, 202, 0) 72%
+    );
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.32) inset;
+    animation: click-ripple-wave 680ms cubic-bezier(0.2, 0.65, 0.3, 1) forwards;
+}
+
+@keyframes click-ripple-wave {
+    0% {
+        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(0.2);
+    }
+    72% {
+        opacity: 0.38;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(7.5);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .click-ripple { display: none; }
 }
 
 /* ================= 1. 首屏莫奈油画视觉 ================= */
@@ -128,6 +167,180 @@ body {
     border-bottom: 1px solid #eee;
 }
 
+/* 简历区延续首页的莫奈油画意象 */
+#about {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 86% 4%, rgba(194, 216, 227, 0.18), transparent 35%),
+        linear-gradient(180deg, #f5f9fb, rgba(255, 255, 255, 0.98) 42%);
+}
+
+#about::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 18px;
+    right: -12vw;
+    width: min(60vw, 780px);
+    height: 340px;
+    border-radius: 48% 0 0 52%;
+    background: url("images/bg.jpg") 72% 38% / 150% auto no-repeat;
+    opacity: 0.16;
+    filter: saturate(0.74) blur(18px);
+    transform: scale(1.08);
+    -webkit-mask-image: radial-gradient(ellipse at 68% 35%, #000 0%, rgba(0,0,0,0.72) 40%, transparent 76%);
+    mask-image: radial-gradient(ellipse at 68% 35%, #000 0%, rgba(0,0,0,0.72) 40%, transparent 76%);
+}
+
+#about::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: -120px;
+    bottom: 8%;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(172, 199, 211, 0.3), rgba(205, 220, 229, 0.12) 48%, transparent 72%);
+    filter: blur(8px);
+}
+
+#about .section-container,
+#portfolio .section-container,
+#laboratory .section-container {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 960px;
+    min-width: 0;
+}
+
+.resume-side-nav {
+    position: sticky;
+    top: 50%;
+    z-index: 3;
+    align-self: flex-start;
+    flex: 0 0 190px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin: 34vh 46px 0 0;
+    padding: 8px;
+    transform: translateY(-50%);
+}
+
+.resume-side-nav a {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    min-height: 72px;
+    padding: 12px 24px;
+    border: 1px solid rgba(255,255,255,0.64);
+    border-radius: 24px;
+    background:
+        linear-gradient(135deg, rgba(255,255,255,0.48), rgba(202,222,235,0.16)),
+        rgba(210,226,237,0.14);
+    color: var(--resume-glass-text);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.65rem, 2.2vw, 2.35rem);
+    line-height: 1;
+    text-decoration: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.72);
+    box-shadow:
+        0 12px 30px rgba(72,95,116,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.78),
+        inset 0 -1px 0 rgba(118,151,177,0.16);
+    backdrop-filter: blur(18px) saturate(1.35);
+    -webkit-backdrop-filter: blur(18px) saturate(1.35);
+    transition: transform 0.3s cubic-bezier(.2,.8,.2,1), background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.resume-side-nav a::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -80%;
+    left: -55%;
+    width: 90%;
+    height: 240%;
+    border-radius: 50%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    transform: rotate(24deg);
+    transition: left 0.55s cubic-bezier(.2,.8,.2,1);
+}
+
+.resume-side-nav a::after {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    background: url("images/bg.jpg") 20% center / 380% auto no-repeat;
+    opacity: 0.2;
+    filter: blur(3px) saturate(0.8);
+}
+
+.resume-side-nav a:hover,
+.resume-side-nav a:focus-visible {
+    background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(184,211,228,0.23));
+    box-shadow:
+        0 18px 38px rgba(72,95,116,0.2),
+        inset 0 1px 0 rgba(255,255,255,0.9),
+        inset 0 -1px 0 rgba(118,151,177,0.2);
+    transform: translateX(8px) scale(1.025);
+}
+
+.resume-side-nav a:hover::before,
+.resume-side-nav a:focus-visible::before {
+    left: 90%;
+}
+
+.resume-side-nav a.is-current {
+    color: #168fc8;
+    text-shadow:
+        0 1px 0 rgba(255,255,255,0.78),
+        0 0 18px rgba(22,143,200,0.16);
+    border-color: rgba(78,174,216,0.46);
+    background: linear-gradient(135deg, rgba(255,255,255,0.62), rgba(155,211,235,0.24));
+    box-shadow:
+        0 14px 34px rgba(47,137,179,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.92),
+        inset 0 -1px 0 rgba(42,150,198,0.2);
+}
+
+@media (max-width: 820px) {
+    #about,
+    #portfolio,
+    #laboratory {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .resume-side-nav {
+        position: relative;
+        top: auto;
+        align-self: center;
+        flex: none;
+        width: min(900px, calc(100% - 24px));
+        box-sizing: border-box;
+        flex-direction: row;
+        justify-content: center;
+        gap: 14px;
+        margin: 0 0 28px;
+        padding: 8px;
+        transform: none;
+    }
+
+    .resume-side-nav a {
+        font-size: clamp(1.25rem, 3vw, 1.8rem);
+        min-height: 54px;
+        padding: 8px 18px;
+        border-radius: 18px;
+    }
+}
+
 .section-container {
     max-width: 960px;
     width: 100%;
@@ -145,22 +358,42 @@ body {
 
 /* About / 简历样式 */
 .profile-card {
-    background: #ffffff;
-    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.86);
+    backdrop-filter: blur(14px) saturate(1.08);
+    -webkit-backdrop-filter: blur(14px) saturate(1.08);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 22px;
     padding: 1.8rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 16px 42px rgba(68,91,111,0.09), inset 0 1px 0 rgba(255,255,255,0.96), inset 1px 0 0 rgba(255,255,255,0.56), inset 0 -1px 0 rgba(126,158,181,0.14);
     margin-bottom: 1.5rem;
-    border-top: 5px solid #92a5ca;
+    border: 1px solid rgba(203,220,232,0.72);
+}
+
+.profile-card::before,
+.info-block::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -65%;
+    left: -18%;
+    width: 72%;
+    height: 120%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.74), rgba(217,232,241,0.18) 48%, transparent 72%);
+    transform: rotate(-10deg);
+    pointer-events: none;
 }
 
 .profile-header h1 { margin: 0 0 6px 0; font-size: 2.2rem; }
 .tagline { font-size: 1.1rem; color: #555; margin-bottom: 10px; }
-.job-badge { display: inline-block; background-color: #e6f0fa; color: #92a5ca; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 0.88rem; margin-bottom: 12px; }
+.job-badge { display: inline-block; background: rgba(222,235,245,0.58); color: #7892b1; padding: 6px 14px; border: 1px solid rgba(255,255,255,0.78); border-radius: 20px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 5px 14px rgba(72,95,116,0.05); backdrop-filter: blur(8px); font-weight: bold; font-size: 0.88rem; margin-bottom: 12px; }
 .contact-chips { display: flex; gap: 10px; flex-wrap: wrap; }
-.chip { background: #f4f6f8; padding: 5px 12px; border-radius: 6px; font-size: 0.85rem; }
+.chip { background: rgba(241,245,248,0.62); padding: 5px 12px; border: 1px solid rgba(255,255,255,0.84); border-radius: 10px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 4px 12px rgba(72,95,116,0.04); backdrop-filter: blur(8px); font-size: 0.85rem; }
 
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.info-block { background: #ffffff; border-radius: 10px; padding: 1.2rem; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04); border: 1px solid #f0f2f5; }
+.info-block { position: relative; isolation: isolate; overflow: hidden; background: linear-gradient(135deg, rgba(255,255,255,0.78), rgba(235,244,249,0.48)); backdrop-filter: blur(16px) saturate(1.18); -webkit-backdrop-filter: blur(16px) saturate(1.18); border-radius: 20px; padding: 1.2rem; margin-bottom: 18px; box-shadow: 0 14px 36px rgba(70,91,110,0.075), inset 0 1px 0 rgba(255,255,255,0.96), inset 1px 0 0 rgba(255,255,255,0.58), inset 0 -1px 0 rgba(126,158,181,0.13); border: 1px solid rgba(205,222,233,0.72); }
 .info-block h3 { margin-top: 0; margin-bottom: 0.8rem; font-size: 1.1rem; border-bottom: 2px solid #f0f2f5; padding-bottom: 6px; }
 
 .time-header { display: flex; justify-content: space-between; }
@@ -179,15 +412,48 @@ body {
 .tab-btn { padding: 6px 14px; background: #f0f2f5; color: #333; text-decoration: none; border-radius: 20px; font-size: 0.88rem; transition: all 0.2s; }
 .tab-btn:hover { background: #92a5ca; color: white; }
 
-.portfolio-group { margin-bottom: 35px; scroll-margin-top: 40px; }
-.group-title-text { font-size: 1.2rem; color: #333; margin-bottom: 12px; padding-left: 8px; border-left: 4px solid #92a5ca; }
+.portfolio-header { margin-bottom: 42px; }
+.portfolio-group { margin-bottom: 72px; scroll-margin-top: 40px; }
+.group-title-text { font-size: 1.2rem; color: #333; margin-bottom: 20px; padding-left: 8px; border-left: 4px solid #92a5ca; }
 
-.image-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-.art-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.06); cursor: pointer; transition: transform 0.2s; }
-.art-card:hover { transform: translateY(-4px); }
+#portfolio .section-container { max-width: 1180px; }
 
-.img-wrapper { position: relative; width: 100%; height: 180px; overflow: hidden; background: #f0f0f0; }
-.img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+.image-grid { columns: 3 240px; column-gap: 18px; }
+.image-grid[data-gallery="illustration"],
+.image-grid[data-gallery="chibi"],
+.image-grid[data-gallery="print_book"] {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    columns: auto;
+}
+
+.image-grid[data-gallery="illustration"] .art-card,
+.image-grid[data-gallery="chibi"] .art-card,
+.image-grid[data-gallery="print_book"] .art-card {
+    display: block;
+    margin: 0;
+}
+
+.image-grid[data-gallery="illustration"] .img-wrapper,
+.image-grid[data-gallery="chibi"] .img-wrapper,
+.image-grid[data-gallery="print_book"] .img-wrapper {
+    aspect-ratio: 16 / 10;
+}
+
+.image-grid[data-gallery="illustration"] .img-wrapper img,
+.image-grid[data-gallery="chibi"] .img-wrapper img,
+.image-grid[data-gallery="print_book"] .img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.art-card { display: inline-block; width: 100%; margin: 0 0 18px; padding: 0; border: 0; background: transparent; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 24px rgba(51,67,88,0.08); cursor: zoom-in; break-inside: avoid; transition: transform 0.28s ease, box-shadow 0.28s ease; }
+.art-card:hover { transform: translateY(-5px); box-shadow: 0 16px 38px rgba(51,67,88,0.16); }
+.art-card:focus-visible { outline: 3px solid rgba(146,165,202,0.5); outline-offset: 4px; }
+
+.img-wrapper { position: relative; width: 100%; overflow: hidden; background: #f0f0f0; }
+.img-wrapper img { display: block; width: 100%; height: auto; object-fit: contain; }
 
 .overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); color: white; display: flex; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.2s; font-size: 0.8rem; }
 .art-card:hover .overlay { opacity: 1; }
@@ -198,44 +464,12 @@ body {
 /* Laboratory */
 .lab-box { background: #f8fafc; padding: 2rem; border-radius: 10px; border-left: 4px solid #92a5ca; }
 
-/* 作品网格与纯图片卡片 */
-.image-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 16px;
-}
-
-.art-card {
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    cursor: pointer;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.art-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-}
-
-.img-wrapper {
-    position: relative;
-    width: 100%;
-    height: 240px; /* 加高图片区域，更突出画作 */
-    overflow: hidden;
-    background: #f0f2f5;
-}
-
-.img-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
+/* 作品图片交互 */
+.img-wrapper img { transition: transform 0.45s ease, filter 0.3s ease; }
 
 .art-card:hover .img-wrapper img {
-    transform: scale(1.05); /* 鼠标悬停轻微放大 */
+    transform: scale(1.025);
+    filter: saturate(1.04);
 }
 
 .overlay {
@@ -256,7 +490,46 @@ body {
     opacity: 1;
 }
 /* Lightbox 大图预览 */
-.lightbox { display: none; position: fixed; z-index: 999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); flex-direction: column; justify-content: center; align-items: center; }
-.lightbox img { max-width: 90%; max-height: 80%; border-radius: 4px; }
+.lightbox { display: flex; visibility: hidden; opacity: 0; position: fixed; z-index: 999; inset: 0; width: 100%; height: 100%; background: rgba(17,24,34,0.94); backdrop-filter: blur(12px); flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.24s ease, visibility 0.24s ease; }
+.lightbox.is-open { visibility: visible; opacity: 1; }
+.lightbox-open { overflow: hidden; }
+.lightbox img { max-width: min(92vw, 1400px); max-height: 86vh; border-radius: 8px; box-shadow: 0 24px 80px rgba(0,0,0,0.34); }
 #lightbox-caption { color: white; margin-top: 15px; }
-.close-btn { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
+.close-btn { position: absolute; z-index: 2; top: 20px; right: 30px; padding: 4px 10px; border: 0; background: transparent; color: white; font: inherit; font-size: 40px; line-height: 1; cursor: pointer; }
+.lightbox-nav { position: absolute; z-index: 2; top: 50%; width: 58px; height: 76px; padding: 0; border: 1px solid rgba(255,255,255,0.18); border-radius: 50%; background: rgba(255,255,255,0.08); color: white; font: inherit; font-size: 54px; line-height: 1; cursor: pointer; transform: translateY(-50%); backdrop-filter: blur(8px); transition: background 0.2s ease, transform 0.2s ease; }
+.lightbox-nav:hover { background: rgba(255,255,255,0.18); transform: translateY(-50%) scale(1.06); }
+.lightbox-prev { left: 26px; }
+.lightbox-next { right: 26px; }
+
+@media (max-width: 700px) {
+    #about::before {
+        top: 12px;
+        right: -35%;
+        width: 95vw;
+        height: 220px;
+        opacity: 0.12;
+        filter: saturate(0.7) blur(16px);
+    }
+    .resume-side-nav {
+        justify-content: flex-start;
+        gap: 24px;
+        padding: 18px 22px;
+        overflow-x: auto;
+    }
+    .resume-side-nav a { flex: 0 0 auto; }
+    #portfolio.content-section { padding-left: 14px; padding-right: 14px; }
+    .portfolio-header { margin-bottom: 30px; }
+    .portfolio-group { margin-bottom: 52px; }
+    .image-grid { columns: 2 135px; column-gap: 10px; }
+    .image-grid[data-gallery="illustration"],
+    .image-grid[data-gallery="chibi"],
+    .image-grid[data-gallery="print_book"] {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .art-card { margin-bottom: 10px; border-radius: 10px; }
+    .lightbox img { max-width: 94vw; max-height: 82vh; }
+    .lightbox-nav { width: 44px; height: 56px; border: 0; background: rgba(12,18,27,0.32); font-size: 42px; }
+    .lightbox-prev { left: 8px; }
+    .lightbox-next { right: 8px; }
+}
