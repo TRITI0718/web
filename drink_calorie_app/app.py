@@ -147,6 +147,27 @@ CATEGORY_DISPLAY_MAP = {
     "果饮":
         "果饮",
 
+    "果咖":
+        "果咖",
+
+    "经典咖啡":
+        "咖啡",
+
+    "奶咖":
+        "拿铁",
+
+    "冰奶":
+        "奶茶",
+
+    "气泡水":
+        "果饮",
+
+    "无咖无茶":
+        "其他饮品",
+
+    "冰沙甜品":
+        "冰沙",
+
     "冰淇淋":
         "冰淇淋",
 
@@ -164,6 +185,7 @@ CATEGORY_DISPLAY_MAP = {
 BRAND_OPTIONS = [
     "瑞幸",
     "喜茶",
+    "库迪",
     "蜜雪冰城",
     "星巴克",
 ]
@@ -337,6 +359,15 @@ def get_source_badge(
         return (
             '<span class="source-badge source-third">'
             '第三方聚合'
+            '</span>'
+        )
+
+
+    if source_type == "social_media":
+
+        return (
+            '<span class="source-badge source-social">'
+            '社交媒体整理'
             '</span>'
         )
 
@@ -1442,38 +1473,82 @@ official_heytea_count = int(
 )
 
 
+luckin_mask = (
+    df["brand"].eq("瑞幸")
+)
+
+luckin_count = int(
+    luckin_mask.sum()
+)
+
+
+cotti_social_mask = (
+    df["brand"].eq("库迪")
+    & df["source_type"].str.lower().eq("social_media")
+)
+
+cotti_social_count = int(
+    cotti_social_mask.sum()
+)
+
+
+scope_options = [
+    "全部饮品"
+]
+
+
 if official_heytea_count:
 
-    data_scope = st.segmented_control(
-        "首页数据范围",
-        [
-            "喜茶官方数据",
-            "全部饮品",
-        ],
-        default="喜茶官方数据",
-        label_visibility="collapsed",
-        width="stretch",
+    scope_options.append(
+        "喜茶官方数据"
     )
 
 
-    if data_scope == "喜茶官方数据":
+if luckin_count:
 
-        display_df = (
-            df[
-                official_heytea_mask
-            ]
-            .copy()
-        )
+    scope_options.append(
+        "瑞幸表格数据"
+    )
 
 
-        st.caption(
-            f"已载入 {official_heytea_count} 款喜茶官方热量数据"
-        )
+if cotti_social_count:
+
+    scope_options.append(
+        "库迪社交媒体数据"
+    )
 
 
-    else:
+data_scope = st.segmented_control(
+    "首页数据范围",
+    scope_options,
+    default="全部饮品",
+    label_visibility="collapsed",
+    width="stretch",
+)
 
-        display_df = df.copy()
+
+if data_scope == "喜茶官方数据":
+
+    display_df = df[official_heytea_mask].copy()
+    st.caption(
+        f"已载入 {official_heytea_count} 款喜茶官方热量数据"
+    )
+
+
+elif data_scope == "瑞幸表格数据":
+
+    display_df = df[luckin_mask].copy()
+    st.caption(
+        f"已载入 {luckin_count} 款瑞幸表格热量数据"
+    )
+
+
+elif data_scope == "库迪社交媒体数据":
+
+    display_df = df[cotti_social_mask].copy()
+    st.caption(
+        f"已载入 {cotti_social_count} 条库迪分杯型热量数据"
+    )
 
 
 else:
@@ -1645,6 +1720,7 @@ with filter_col5:
             "全部",
             "官方数据",
             "第三方数据",
+            "社交媒体数据",
         ],
     )
 
@@ -1808,6 +1884,19 @@ elif source_filter == "第三方数据":
             ]
             ==
             "third_party"
+        ]
+    )
+
+
+elif source_filter == "社交媒体数据":
+
+    filtered_df = (
+        filtered_df[
+            filtered_df[
+                "source_type"
+            ]
+            ==
+            "social_media"
         ]
     )
 
@@ -2339,8 +2428,10 @@ for rank, (_, row) in enumerate(
 
     if (
         source_type
-        ==
-        "third_party"
+        in {
+            "third_party",
+            "social_media",
+        }
         and
         metric_column
         ==
@@ -2485,6 +2576,15 @@ for rank, (_, row) in enumerate(
         <div class="source-info">
             {source_line}
             {range_html}
+        </div>
+        """
+
+
+    elif source_type == "social_media":
+
+        source_html = """
+        <div class="source-info">
+            数据来源：社交媒体公开图片整理
         </div>
         """
 
