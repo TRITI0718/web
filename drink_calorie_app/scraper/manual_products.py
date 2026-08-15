@@ -1,6 +1,4 @@
 from pathlib import Path
-from datetime import datetime, timedelta
-
 import pandas as pd
 
 from database.database import (
@@ -36,13 +34,11 @@ BASE_DIR = (
 # 2. 配置
 # ============================================================
 
-REFRESH_DAYS = 30
-
 # None = 全部
 ONLY_BRAND = None
 
-# 可由 Streamlit 动态覆盖
-FORCE_REFRESH = False
+# 所有查询默认覆盖刷新
+FORCE_REFRESH = True
 
 
 # ============================================================
@@ -146,139 +142,7 @@ def record_needs_refresh(
         name_cn,
         name_en="",
 ):
-
-    if FORCE_REFRESH:
-
-        return True
-
-
-    if (
-        existing_df is None
-        or
-        existing_df.empty
-    ):
-
-        return True
-
-
-    if "brand" not in existing_df.columns:
-
-        return True
-
-
-    brand_df = (
-        existing_df[
-            existing_df[
-                "brand"
-            ]
-            .astype(str)
-            ==
-            str(
-                brand
-            )
-        ]
-    )
-
-
-    if brand_df.empty:
-
-        return True
-
-
-    mask = pd.Series(
-        False,
-        index=brand_df.index
-    )
-
-
-    if "name_cn" in brand_df.columns:
-
-        mask |= (
-            brand_df[
-                "name_cn"
-            ]
-            .fillna("")
-            .astype(str)
-            .str.strip()
-            ==
-            str(
-                name_cn
-            ).strip()
-        )
-
-
-    if (
-        name_en
-        and
-        "name"
-        in brand_df.columns
-    ):
-
-        mask |= (
-            brand_df[
-                "name"
-            ]
-            .fillna("")
-            .astype(str)
-            .str.strip()
-            ==
-            str(
-                name_en
-            ).strip()
-        )
-
-
-    matched = (
-        brand_df[
-            mask
-        ]
-    )
-
-
-    # 新商品
-    if matched.empty:
-
-        return True
-
-
-    # 没时间字段就刷新
-    if (
-        "scraped_at"
-        not in matched.columns
-    ):
-
-        return True
-
-
-    latest = pd.to_datetime(
-        matched[
-            "scraped_at"
-        ],
-        errors="coerce"
-    ).max()
-
-
-    if pd.isna(
-        latest
-    ):
-
-        return True
-
-
-    cutoff = (
-        datetime.now()
-        -
-        timedelta(
-            days=REFRESH_DAYS
-        )
-    )
-
-
-    return (
-        latest.to_pydatetime()
-        <
-        cutoff
-    )
+    return True
 
 
 # ============================================================
@@ -541,9 +405,7 @@ def main():
 
             skipped += 1
 
-            print(
-                f"⏭️ {REFRESH_DAYS} 天内已有数据"
-            )
+            print("⏭️ 当前商品无需更新")
 
             continue
 
@@ -613,7 +475,8 @@ def main():
 
         save_drinks(
             collected,
-            export_csv=True
+            export_csv=True,
+            replace_products=True,
         )
 
 

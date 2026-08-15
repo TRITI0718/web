@@ -23,7 +23,7 @@ from utils.product_manager import (
 # ============================================================
 
 st.set_page_config(
-    page_title="饮品营养排行榜",
+    page_title="DRINK CALORIE",
     page_icon=":material/local_cafe:",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -973,46 +973,19 @@ if page == "📝 商品管理":
 
 
     st.caption(
-        "默认只查询新增商品、数据库没有记录的商品、"
-        "以及超过刷新周期的商品。"
+        "每次运行都会重新查询所选范围，"
+        "并彻底覆盖对应商品的旧数据。"
     )
 
 
-    run_col1, run_col2 = st.columns(
-        2
+    run_brand = st.selectbox(
+        "运行范围",
+        [
+            "全部品牌",
+            *BRAND_OPTIONS,
+        ],
+        key="run_brand",
     )
-
-
-    with run_col1:
-
-        run_brand = st.selectbox(
-            "运行范围",
-            [
-                "全部品牌",
-                *BRAND_OPTIONS,
-            ],
-            key="run_brand",
-        )
-
-
-    with run_col2:
-
-        force_refresh = st.checkbox(
-            "强制重新查询现有商品",
-            value=False,
-            help=(
-                "勾选后会忽略 30 天刷新限制，"
-                "重新查询所选品牌的所有启用商品。"
-            ),
-        )
-
-
-    if force_refresh:
-
-        st.warning(
-            "强制刷新会重新搜索已有商品，"
-            "运行时间和请求数量都会明显增加。"
-        )
 
 
     # ========================================================
@@ -1078,14 +1051,10 @@ if page == "📝 商品管理":
 
 
         # ----------------------------------------------------
-        # 设置是否强制刷新
+        # 每次查询都强制刷新
         # ----------------------------------------------------
 
-        manual_products.FORCE_REFRESH = (
-            bool(
-                force_refresh
-            )
-        )
+        manual_products.FORCE_REFRESH = True
 
 
         # ----------------------------------------------------
@@ -1384,7 +1353,7 @@ if not df.empty:
 if df.empty:
 
     st.title(
-        "🥤 饮品营养排行榜"
+        "DRINK CALORIE"
     )
 
 
@@ -1451,10 +1420,8 @@ METRICS = {
 
 st.markdown(
     """
-    <div class="page-hero">
-        <span class="eyebrow">清爽选择 · 轻松比较</span>
-        <h1>饮品营养排行榜</h1>
-        <p>快速比较热门饮品的热量、糖分与营养信息，找到更适合今天的那一杯。</p>
+    <div class="page-hero page-hero-brand">
+        <h1>DRINK CALORIE</h1>
     </div>
     """,
     unsafe_allow_html=True,

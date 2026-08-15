@@ -463,7 +463,8 @@ def normalize_dataframe(df):
 
 def save_drinks(
         drinks,
-        export_csv=True
+        export_csv=True,
+        replace_products=False,
 ):
 
     if not drinks:
@@ -487,6 +488,52 @@ def save_drinks(
     connection = get_connection()
 
     cursor = connection.cursor()
+
+    # 覆盖模式按“品牌 + 商品名”先删除旧记录，
+    # 避免来源 URL 变化后保留同一商品的历史副本。
+    if replace_products:
+
+        for _, row in df.iterrows():
+
+            brand = clean_value(
+                row["brand"]
+            )
+
+            name_cn = clean_value(
+                row["name_cn"]
+            )
+
+            name = clean_value(
+                row["name"]
+            )
+
+            if name_cn:
+
+                cursor.execute(
+                    """
+                    DELETE FROM drinks
+                    WHERE brand = ?
+                    AND TRIM(COALESCE(name_cn, '')) = ?
+                    """,
+                    (
+                        brand,
+                        name_cn,
+                    ),
+                )
+
+            elif name:
+
+                cursor.execute(
+                    """
+                    DELETE FROM drinks
+                    WHERE brand = ?
+                    AND TRIM(COALESCE(name, '')) = ?
+                    """,
+                    (
+                        brand,
+                        name,
+                    ),
+                )
 
     sql = """
     INSERT INTO drinks (
