@@ -1429,7 +1429,60 @@ st.markdown(
 
 
 # ============================================================
-# 14. 搜索框
+# 14. 首页数据范围
+# ============================================================
+
+official_heytea_mask = (
+    df["brand"].eq("喜茶")
+    & df["source_type"].str.lower().eq("official")
+)
+
+official_heytea_count = int(
+    official_heytea_mask.sum()
+)
+
+
+if official_heytea_count:
+
+    data_scope = st.segmented_control(
+        "首页数据范围",
+        [
+            "喜茶官方数据",
+            "全部饮品",
+        ],
+        default="喜茶官方数据",
+        label_visibility="collapsed",
+        width="stretch",
+    )
+
+
+    if data_scope == "喜茶官方数据":
+
+        display_df = (
+            df[
+                official_heytea_mask
+            ]
+            .copy()
+        )
+
+
+        st.caption(
+            f"已载入 {official_heytea_count} 款喜茶官方热量数据"
+        )
+
+
+    else:
+
+        display_df = df.copy()
+
+
+else:
+
+    display_df = df.copy()
+
+
+# ============================================================
+# 15. 搜索框
 # ============================================================
 
 keyword = st.text_input(
@@ -1464,7 +1517,7 @@ with filter_col1:
         [
             item
             for item
-            in df[
+            in display_df[
                 "brand"
             ]
             .dropna()
@@ -1490,7 +1543,7 @@ with filter_col1:
 with filter_col2:
 
     raw_categories = (
-        df[
+        display_df[
             "category"
         ]
         .dropna()
@@ -1552,7 +1605,7 @@ filter_col4, filter_col5, filter_col6 = st.columns(
 with filter_col4:
 
     valid_sizes = (
-        df[
+        display_df[
             "size"
         ]
         .fillna("")
@@ -1661,7 +1714,7 @@ metric_unit = (
 # ============================================================
 
 filtered_df = (
-    df.copy()
+    display_df.copy()
 )
 
 
@@ -2064,7 +2117,7 @@ if filtered_df.empty:
 # ============================================================
 
 max_metric_value = (
-    df[
+    filtered_df[
         metric_column
     ]
     .max(
