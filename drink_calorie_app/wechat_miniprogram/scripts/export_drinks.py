@@ -11,6 +11,29 @@ PROJECT_DIR = MINIPROGRAM_DIR.parent
 DB_FILE = PROJECT_DIR / "data" / "drinks.db"
 OUTPUT_FILE = MINIPROGRAM_DIR / "data" / "drinks.js"
 
+BRAND_CODES = {
+    "星巴克": "S",
+    "瑞幸": "L",
+    "喜茶": "H",
+    "霸王茶姬": "B",
+    "蜜雪冰城": "M",
+    "Manner": "M",
+    "古茗": "G",
+    "库迪": "C",
+}
+
+BRAND_ALIASES = {
+    **BRAND_CODES,
+    "Starbucks": "S",
+    "Luckin": "L",
+    "Heytea": "H",
+    "HEYTEA": "H",
+    "CHAGEE": "B",
+    "Mixue": "M",
+    "Goodme": "G",
+    "Cotti": "C",
+}
+
 
 def clean_number(value):
     if value is None:
@@ -19,6 +42,13 @@ def clean_number(value):
     if not math.isfinite(number):
         return None
     return number
+
+
+def anonymize_text(value):
+    text = value or ""
+    for brand, code in BRAND_ALIASES.items():
+        text = text.replace(brand, code)
+    return text
 
 
 with sqlite3.connect(DB_FILE) as connection:
@@ -40,9 +70,9 @@ for row in rows:
     records.append(
         {
             "key": str(row["id"]),
-            "brand": row["brand"] or "",
-            "name": row["name"] or "",
-            "nameCn": row["name_cn"] or "",
+            "brand": BRAND_CODES.get(row["brand"], "O"),
+            "name": anonymize_text(row["name"]),
+            "nameCn": anonymize_text(row["name_cn"]),
             "category": row["category"] or "其他饮品",
             "size": row["size"] or "",
             "calories": clean_number(row["calories"]),
