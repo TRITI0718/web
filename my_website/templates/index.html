@@ -131,7 +131,15 @@
         <section id="portfolio" class="content-section">
             <nav class="resume-side-nav" aria-label="页面导航">
                 <a href="#about">About</a>
-                <a href="#portfolio" class="is-current" aria-current="location">Portfolio</a>
+                <div class="portfolio-nav-branch">
+                    <a href="#portfolio" class="is-current portfolio-nav-trigger" aria-current="location" aria-haspopup="true">Portfolio</a>
+                    <div class="portfolio-subnav" aria-label="作品集分类">
+                        <span class="portfolio-wheel-dot" aria-hidden="true"></span>
+                        {% for group in portfolio_data %}
+                            <a href="#{{ group.category_id }}" class="portfolio-subnav-link" data-portfolio-target="{{ group.category_id }}">{{ group.category_name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
                 <a href="#laboratory">Laboratory</a>
             </nav>
             <div class="section-container">
@@ -139,18 +147,11 @@
                     <h2 class="section-title">PORTFOLIO</h2>
 
 
-                    <!-- 分类切换标签 (去掉了无谓的括号) -->
-                    <div class="category-tabs">
-                        {% for group in portfolio_data %}
-                            <a href="#{{ group.category_id }}" class="tab-btn">{{ group.category_name }}</a>
-                        {% endfor %}
-                    </div>
                 </div>
 
                 <!-- 四大分类图片列表 -->
                 {% for group in portfolio_data %}
                     <div id="{{ group.category_id }}" class="portfolio-group">
-                        <h3 class="group-title-text">{{ group.category_name }}</h3>
                         <div class="image-grid" data-gallery="{{ group.category_id }}">
 
                             {% for img in group.images %}
@@ -175,9 +176,31 @@
             </nav>
             <div class="section-container">
                 <h2 class="section-title">LABORATORY</h2>
-                <div class="lab-box">
-                    <h3>实验室经历</h3>
-                    <p>待补充</p>
+                <div class="lab-card-list">
+                    <article class="lab-card" tabindex="0">
+                        <img src="{{ url_for('static', filename='images/laboratory/crystallization.jpg') }}" alt="喷射结晶现象研究实验图">
+                        <div class="lab-card-overlay">
+                            <div class="lab-card-copy">
+                                <span class="lab-project-label">PROJECT 01</span>
+                                <h3>晶体生物：喷射结晶现象研究</h3>
+                                <p class="lab-project-type">超疏水表面结晶实验</p>
+                                <p>以超疏水表面盐溶液蒸发结晶为对象，制备烘烤龟裂及刮涂型 PTFE 基底，配置多种饱和盐溶液并进行显微录像。比较乙酸钠、氯化钠等晶体形貌、疏水角与“脚”高度，复现喷射结晶；发现约 140° 接触角效果最佳，且乙酸钠生长高度显著高于氯化钠。</p>
+                                <span class="lab-project-meta">实验过程 · 装置/样品 · 关键结果</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="lab-card" tabindex="0">
+                        <img src="{{ url_for('static', filename='images/laboratory/semiconductor.jpg') }}" alt="磁性半导体制备与表征实验图">
+                        <div class="lab-card-overlay">
+                            <div class="lab-card-copy">
+                                <span class="lab-project-label">PROJECT 02</span>
+                                <h3>磁性半导体的制备与表征</h3>
+                                <p class="lab-project-type">新型磁性半导体实验</p>
+                                <p>采用固相反应法制备 (Ba₀.₉Na₀.₁)(Cu₁.₉Mn₀.₁)Se₂ 磁性半导体，完成原料配比、封管、高温烧结、压片及二次烧制。利用 XRD 分析晶体结构、晶格参数和相纯度，并通过 SQUID 磁滞回线获得矫顽力与饱和磁化强度，验证化学压力及载流子对材料磁性的调控作用。</p>
+                                <span class="lab-project-meta">实验过程 · 装置/样品 · 关键结果</span>
+                            </div>
+                        </div>
+                    </article>
                 </div>
             </div>
         </section>
@@ -263,12 +286,57 @@
             if (event.button !== 0 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
             const ripple = document.createElement('span');
-            ripple.className = 'click-ripple';
+            ripple.className = event.target.closest('.hero-section')
+                ? 'click-ripple click-ripple--hero'
+                : 'click-ripple';
             ripple.style.left = `${event.clientX}px`;
             ripple.style.top = `${event.clientY}px`;
             document.body.appendChild(ripple);
             ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
         });
+
+        const portfolioGroups = [...document.querySelectorAll('.portfolio-group')];
+        const portfolioSubnavLinks = [...document.querySelectorAll('.portfolio-subnav-link')];
+
+        function updatePortfolioWheel(activeIndex) {
+            portfolioSubnavLinks.forEach((link, index) => {
+                const distance = index - activeIndex;
+                const absoluteDistance = Math.abs(distance);
+                link.style.setProperty('--wheel-y', `${distance * 36}px`);
+                link.style.setProperty('--wheel-tilt', `${distance * -9}deg`);
+                link.style.setProperty('--wheel-ray', `${distance * 6}deg`);
+                link.style.setProperty('--wheel-x', `${absoluteDistance * 7}px`);
+                link.style.setProperty('--wheel-opacity', Math.max(0.38, 1 - absoluteDistance * 0.2));
+                const wheelScale = Math.max(0.78, 1 - absoluteDistance * 0.08);
+                link.style.setProperty('--wheel-scale', wheelScale);
+                link.style.setProperty('--wheel-hover-scale', wheelScale * 1.06);
+            });
+        }
+
+        updatePortfolioWheel(0);
+
+        if ('IntersectionObserver' in window && portfolioGroups.length) {
+            const portfolioObserver = new IntersectionObserver((entries) => {
+                const visibleEntry = entries
+                    .filter((entry) => entry.isIntersecting)
+                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+                if (!visibleEntry) return;
+                const activeIndex = portfolioGroups.indexOf(visibleEntry.target);
+                portfolioSubnavLinks.forEach((link) => {
+                    const isActive = link.dataset.portfolioTarget === visibleEntry.target.id;
+                    link.classList.toggle('is-active', isActive);
+                    if (isActive) link.setAttribute('aria-current', 'location');
+                    else link.removeAttribute('aria-current');
+                });
+                updatePortfolioWheel(Math.max(0, activeIndex));
+            }, {
+                rootMargin: '-18% 0px -58% 0px',
+                threshold: [0, 0.12, 0.3]
+            });
+
+            portfolioGroups.forEach((group) => portfolioObserver.observe(group));
+        }
     </script>
 </body>
 </html>

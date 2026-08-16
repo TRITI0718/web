@@ -8,7 +8,7 @@ body {
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", sans-serif;
     background-color: #f7f9fb;
-    color: #2c3e50;
+    color: #3f4348;
     --resume-glass-text: #92a5ca;
 }
 
@@ -18,18 +18,23 @@ body {
     z-index: 10000;
     width: 18px;
     height: 18px;
-    border: 1.5px solid rgba(121, 148, 194, 0.7);
+    border: 2px solid transparent;
     border-radius: 50%;
     pointer-events: none;
     transform: translate(-50%, -50%) scale(0.2);
-    background: radial-gradient(
-        circle,
-        rgba(219, 232, 247, 0.38) 0%,
-        rgba(146, 165, 202, 0.2) 44%,
-        rgba(146, 165, 202, 0) 72%
-    );
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.32) inset;
+    background: rgba(211, 231, 244, 0.08);
+    box-shadow:
+        0 0 8px rgba(80, 93, 106, 0.2),
+        0 0 16px rgba(255, 255, 255, 0.34),
+        inset 0 0 8px rgba(75, 88, 102, 0.18),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
     animation: click-ripple-wave 680ms cubic-bezier(0.2, 0.65, 0.3, 1) forwards;
+}
+
+.click-ripple--hero {
+    background: rgba(225, 239, 247, 0.07);
+    backdrop-filter: blur(7px) saturate(0.88);
+    -webkit-backdrop-filter: blur(7px) saturate(0.88);
 }
 
 @keyframes click-ripple-wave {
@@ -221,11 +226,11 @@ body {
     top: 50%;
     z-index: 3;
     align-self: flex-start;
-    flex: 0 0 190px;
+    flex: 0 0 218px;
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    margin: 34vh 46px 0 0;
+    gap: 21px;
+    margin: 34vh 58px 0 0;
     padding: 8px;
     transform: translateY(-50%);
 }
@@ -236,18 +241,20 @@ body {
     overflow: hidden;
     display: flex;
     align-items: center;
-    min-height: 72px;
-    padding: 12px 24px;
+    justify-content: center;
+    min-height: 88px;
+    padding: 13px 24px;
     border: 1px solid rgba(255,255,255,0.64);
-    border-radius: 24px;
+    border-radius: 25px;
     background:
         linear-gradient(135deg, rgba(255,255,255,0.48), rgba(202,222,235,0.16)),
         rgba(210,226,237,0.14);
     color: var(--resume-glass-text);
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(1.65rem, 2.2vw, 2.35rem);
+    font-size: clamp(1.65rem, 2.15vw, 2.35rem);
     line-height: 1;
     text-decoration: none;
+    text-align: center;
     text-shadow: 0 1px 0 rgba(255,255,255,0.72);
     box-shadow:
         0 12px 30px rgba(72,95,116,0.12),
@@ -256,6 +263,8 @@ body {
     backdrop-filter: blur(18px) saturate(1.35);
     -webkit-backdrop-filter: blur(18px) saturate(1.35);
     transition: transform 0.3s cubic-bezier(.2,.8,.2,1), background 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .resume-side-nav a::before {
@@ -289,7 +298,173 @@ body {
         0 18px 38px rgba(72,95,116,0.2),
         inset 0 1px 0 rgba(255,255,255,0.9),
         inset 0 -1px 0 rgba(118,151,177,0.2);
-    transform: translateX(8px) scale(1.025);
+    transform: translateX(13px) scale(1.15);
+}
+
+.portfolio-nav-branch {
+    position: relative;
+    width: 100%;
+}
+
+.portfolio-nav-branch::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 84px;
+    height: 100%;
+}
+
+.portfolio-nav-branch > .portfolio-nav-trigger {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.portfolio-subnav {
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 84px);
+    width: max-content;
+    min-width: 116px;
+    display: block;
+    height: 152px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: opacity 0.9s ease, visibility 0s linear 0.9s;
+    perspective: 520px;
+    transform-style: preserve-3d;
+    isolation: isolate;
+}
+
+.portfolio-subnav::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: calc(100% + 8px);
+    width: 74px;
+    height: 152px;
+    border: 2px solid rgba(158, 177, 196, 0.78);
+    border-left: 0;
+    border-radius: 0 76px 76px 0;
+    transform: translateY(-50%);
+    z-index: 1;
+    -webkit-mask-image: radial-gradient(circle 5px at 100% 50%, transparent 0 4px, #000 5px);
+    mask-image: radial-gradient(circle 5px at 100% 50%, transparent 0 4px, #000 5px);
+}
+
+/* 整个轮盘共用一块椭圆羽化层，避免每行文字产生矩形模糊边界 */
+.portfolio-subnav::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -38px;
+    right: -92px;
+    bottom: -38px;
+    left: -42px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(
+        ellipse at 48% 50%,
+        rgba(255,255,255,0.34) 0%,
+        rgba(255,255,255,0.2) 42%,
+        rgba(255,255,255,0.07) 67%,
+        transparent 92%
+    );
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, rgba(0,0,0,0.82) 44%, rgba(0,0,0,0.3) 72%, transparent 100%);
+    mask-image: radial-gradient(ellipse at center, #000 0%, rgba(0,0,0,0.82) 44%, rgba(0,0,0,0.3) 72%, transparent 100%);
+}
+
+.portfolio-wheel-dot {
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    left: -8px;
+    width: 10px;
+    height: 10px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: none;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.portfolio-nav-branch:hover .portfolio-subnav,
+.portfolio-nav-branch:focus-within .portfolio-subnav {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(-50%);
+    transition: opacity 0.9s ease, visibility 0s linear 0s;
+}
+
+.resume-side-nav .portfolio-subnav-link {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: max-content;
+    min-height: 0;
+    padding: 5px 2px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    overflow: visible;
+    color: #9aafc2;
+    font-family: "Songti SC", "STSong", "SimSun", serif;
+    font-size: 1.05rem;
+    line-height: 1.25;
+    opacity: var(--wheel-opacity, 1);
+    transform:
+        translate(var(--wheel-x, 0px), calc(-50% + var(--wheel-y, 0px)))
+        rotateZ(var(--wheel-ray, 0deg))
+        rotateX(var(--wheel-tilt, 0deg))
+        scale(var(--wheel-scale, 1));
+    transform-origin: left center;
+    transition:
+        transform 0.54s cubic-bezier(.22,.78,.22,1),
+        opacity 0.4s ease,
+        color 0.24s ease,
+        font-size 0.24s ease;
+    z-index: 2;
+}
+
+.resume-side-nav .portfolio-subnav-link::before {
+    display: none;
+}
+
+.portfolio-nav-branch:hover .portfolio-subnav-link,
+.portfolio-nav-branch:focus-within .portfolio-subnav-link {
+    opacity: var(--wheel-opacity, 1);
+}
+
+.resume-side-nav .portfolio-subnav-link:hover,
+.resume-side-nav .portfolio-subnav-link:focus-visible,
+.resume-side-nav .portfolio-subnav-link.is-active {
+    color: #819bb3;
+    background: transparent;
+    box-shadow: none;
+    font-size: 1.2rem;
+    transform:
+        translate(calc(var(--wheel-x, 0px) + 7px), calc(-50% + var(--wheel-y, 0px)))
+        rotateZ(var(--wheel-ray, 0deg))
+        rotateX(var(--wheel-tilt, 0deg))
+        scale(var(--wheel-hover-scale, 1.06));
+}
+
+.resume-side-nav .portfolio-subnav-link::after {
+    display: none;
 }
 
 .resume-side-nav a:hover::before,
@@ -407,16 +582,38 @@ body {
 .step { display: flex; align-items: center; gap: 10px; background: #fafafa; padding: 8px 12px; border-radius: 6px; border-left: 3px solid #92a5ca; font-size: 0.88rem; }
 .step-num { font-weight: bold; color: #92a5ca; }
 
+/* 深色中文内容统一为灰黑宋体，蓝色强调与英文展示字保持原设计 */
+.profile-header h1,
+.tagline,
+.job-badge,
+.chip,
+.info-block h3,
+.info-block p,
+.info-block li,
+.info-block strong,
+.group-title,
+.tag,
+.step-text,
+.group-title-text,
+.lab-card h3,
+.lab-card p {
+    font-family: "Songti SC", "STSong", "SimSun", serif;
+    color: #41464b;
+}
+
 /* Portfolio / 作品集样式 */
 .category-tabs { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
 .tab-btn { padding: 6px 14px; background: #f0f2f5; color: #333; text-decoration: none; border-radius: 20px; font-size: 0.88rem; transition: all 0.2s; }
 .tab-btn:hover { background: #92a5ca; color: white; }
 
 .portfolio-header { margin-bottom: 42px; }
-.portfolio-group { margin-bottom: 72px; scroll-margin-top: 40px; }
-.group-title-text { font-size: 1.2rem; color: #333; margin-bottom: 20px; padding-left: 8px; border-left: 4px solid #92a5ca; }
+.portfolio-group {
+    position: relative;
+    margin-bottom: 72px;
+    scroll-margin-top: 40px;
+}
 
-#portfolio .section-container { max-width: 1180px; }
+#portfolio .section-container { max-width: 1020px; }
 
 .image-grid { columns: 3 240px; column-gap: 18px; }
 .image-grid[data-gallery="illustration"],
@@ -452,7 +649,7 @@ body {
 .art-card:hover { transform: translateY(-5px); box-shadow: 0 16px 38px rgba(51,67,88,0.16); }
 .art-card:focus-visible { outline: 3px solid rgba(146,165,202,0.5); outline-offset: 4px; }
 
-.img-wrapper { position: relative; width: 100%; overflow: hidden; background: #f0f0f0; }
+.img-wrapper { position: relative; width: 100%; overflow: hidden; background: #ffffff; }
 .img-wrapper img { display: block; width: 100%; height: auto; object-fit: contain; }
 
 .overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); color: white; display: flex; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.2s; font-size: 0.8rem; }
@@ -461,8 +658,116 @@ body {
 .art-info h4 { margin: 0; font-size: 0.9rem; }
 .art-info p { margin: 2px 0 0 0; font-size: 0.78rem; color: #777; }
 
-/* Laboratory */
-.lab-box { background: #f8fafc; padding: 2rem; border-radius: 10px; border-left: 4px solid #92a5ca; }
+/* Laboratory：与作品集一致的纵向白色矩形卡片 */
+.lab-card-list {
+    display: grid;
+    gap: 28px;
+}
+
+.lab-card {
+    position: relative;
+    isolation: isolate;
+    min-height: 340px;
+    aspect-ratio: 16 / 7;
+    overflow: hidden;
+    padding: 0;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(51,67,88,0.08);
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.lab-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 38px rgba(51,67,88,0.16);
+}
+
+.lab-card:focus-visible {
+    outline: 3px solid rgba(146,165,202,0.5);
+    outline-offset: 4px;
+}
+
+.lab-card > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #ffffff;
+    transition: transform 0.55s cubic-bezier(.2,.8,.2,1);
+}
+
+.lab-card:hover > img,
+.lab-card:focus-within > img {
+    transform: scale(1.018);
+}
+
+.lab-card-overlay {
+    position: absolute;
+    z-index: 2;
+    inset: 0 0 0 50%;
+    display: flex;
+    align-items: center;
+    padding: clamp(24px, 3vw, 44px);
+    box-sizing: border-box;
+    color: #ffffff;
+    background: linear-gradient(90deg, rgba(26,40,52,0.24), rgba(18,31,43,0.64));
+    backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(0);
+    opacity: 0;
+    transform: translateX(18px);
+    transition: opacity 0.42s ease, transform 0.5s cubic-bezier(.2,.8,.2,1), backdrop-filter 0.5s ease;
+}
+
+.lab-card:hover .lab-card-overlay,
+.lab-card:focus-within .lab-card-overlay {
+    opacity: 1;
+    transform: translateX(0);
+    backdrop-filter: blur(12px) saturate(0.78);
+    -webkit-backdrop-filter: blur(12px) saturate(0.78);
+}
+
+.lab-card-copy {
+    width: 100%;
+}
+
+.lab-project-label {
+    display: inline-block;
+    margin-bottom: 14px;
+    padding: 5px 11px;
+    border: 1px solid rgba(255,255,255,0.48);
+    border-radius: 999px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+}
+
+.lab-card .lab-card-copy h3 {
+    margin: 0 0 13px;
+    color: #ffffff;
+    font-family: "Songti SC", "STSong", "SimSun", serif;
+    font-size: clamp(1.25rem, 2vw, 1.8rem);
+    line-height: 1.35;
+}
+
+.lab-card .lab-card-copy p {
+    margin: 0 0 13px;
+    color: rgba(255,255,255,0.92);
+    font-family: "Songti SC", "STSong", "SimSun", serif;
+    font-size: clamp(0.76rem, 1.05vw, 0.94rem);
+    line-height: 1.75;
+}
+
+.lab-card .lab-card-copy .lab-project-type {
+    color: rgba(222,239,246,0.96);
+    font-size: 0.85rem;
+}
+
+.lab-project-meta {
+    color: rgba(255,255,255,0.7);
+    font-family: "Songti SC", "STSong", "SimSun", serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+}
 
 /* 作品图片交互 */
 .img-wrapper img { transition: transform 0.45s ease, filter 0.3s ease; }
@@ -517,6 +822,20 @@ body {
         overflow-x: auto;
     }
     .resume-side-nav a { flex: 0 0 auto; }
+    .portfolio-nav-branch { flex: 0 0 auto; }
+    .portfolio-subnav {
+        top: calc(100% + 8px);
+        left: 50%;
+        transform: translate(-50%, 0);
+    }
+    .portfolio-subnav::before,
+    .resume-side-nav .portfolio-subnav-link::before {
+        display: none;
+    }
+    .portfolio-nav-branch:hover .portfolio-subnav,
+    .portfolio-nav-branch:focus-within .portfolio-subnav {
+        transform: translate(-50%, 0);
+    }
     #portfolio.content-section { padding-left: 14px; padding-right: 14px; }
     .portfolio-header { margin-bottom: 30px; }
     .portfolio-group { margin-bottom: 52px; }
@@ -532,4 +851,16 @@ body {
     .lightbox-nav { width: 44px; height: 56px; border: 0; background: rgba(12,18,27,0.32); font-size: 42px; }
     .lightbox-prev { left: 8px; }
     .lightbox-next { right: 8px; }
+    .lab-card {
+        min-height: 430px;
+        aspect-ratio: auto;
+    }
+    .lab-card-overlay {
+        inset: 38% 0 0;
+        align-items: flex-start;
+        padding: 22px;
+        background: linear-gradient(180deg, rgba(26,40,52,0.22), rgba(18,31,43,0.76));
+    }
+    .lab-card .lab-card-copy h3 { font-size: 1.2rem; }
+    .lab-card .lab-card-copy p { font-size: 0.76rem; line-height: 1.55; }
 }
