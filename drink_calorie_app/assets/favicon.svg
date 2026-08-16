@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="DRINK CALORIE">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff0a8"/>
+      <stop offset="1" stop-color="#cbdc82"/>
+    </linearGradient>
+    <linearGradient id="tea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9eb95b"/>
+      <stop offset="1" stop-color="#617735"/>
+    </linearGradient>
+  </defs>
+  <rect x="5" y="5" width="118" height="118" rx="34" fill="url(#bg)"/>
+  <path d="M35 43h52l-6 53a10 10 0 0 1-10 9H51a10 10 0 0 1-10-9z" fill="#fffdf1" stroke="#52652f" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M39 60h44l-4 34a7 7 0 0 1-7 6H50a7 7 0 0 1-7-6z" fill="url(#tea)"/>
+  <path d="M85 54c14 1 18 8 16 18-2 9-8 14-18 14" fill="none" stroke="#52652f" stroke-width="6" stroke-linecap="round"/>
+  <path d="M59 51c-2-10 3-18 14-23-1 11-5 19-14 23z" fill="#7e9b45"/>
+  <circle cx="61" cy="79" r="5" fill="#fff6b8" opacity=".9"/>
+  <circle cx="72" cy="86" r="3.5" fill="#fff6b8" opacity=".72"/>
+</svg>

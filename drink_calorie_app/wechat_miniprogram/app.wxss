@@ -1,0 +1,11 @@
+page {
+  color: #303624;
+  background:
+    radial-gradient(circle at 90% 5%, rgba(221, 231, 165, .48), transparent 24%),
+    linear-gradient(180deg, #fffbe9 0%, #faf8eb 100%);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+button::after {
+  border: none;
+}

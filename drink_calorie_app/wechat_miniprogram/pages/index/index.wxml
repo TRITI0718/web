@@ -1,0 +1,120 @@
+<view class="page-shell">
+  <view class="hero glass">
+    <view class="hero-mark">
+      <view class="cup-body"></view>
+      <view class="cup-leaf"></view>
+    </view>
+    <view class="hero-copy">
+      <text class="hero-title">DRINK CALORIE</text>
+      <text class="hero-caption">数据仅供参考</text>
+    </view>
+  </view>
+
+  <view class="search-wrap glass-soft">
+    <input
+      class="search-input"
+      placeholder="搜索"
+      value="{{keyword}}"
+      bindinput="onSearchInput"
+      confirm-type="search"
+    />
+  </view>
+
+  <scroll-view class="brand-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="chip-row">
+      <view
+        wx:for="{{brands}}"
+        wx:key="*this"
+        class="filter-chip {{selectedBrand === item ? 'active' : ''}}"
+        data-value="{{item}}"
+        bindtap="onBrandTap"
+      >{{item}}</view>
+    </view>
+  </scroll-view>
+
+  <view class="picker-grid">
+    <picker mode="selector" range="{{categories}}" value="{{categoryIndex}}" bindchange="onCategoryChange">
+      <view class="picker-card glass-soft">
+        <text class="picker-label">类别</text>
+        <text class="picker-value">{{categories[categoryIndex]}}</text>
+      </view>
+    </picker>
+    <picker mode="selector" range="{{sources}}" value="{{sourceIndex}}" bindchange="onSourceChange">
+      <view class="picker-card glass-soft">
+        <text class="picker-label">数据来源</text>
+        <text class="picker-value">{{sources[sourceIndex]}}</text>
+      </view>
+    </picker>
+    <picker mode="selector" range="{{sortOptions}}" value="{{sortIndex}}" bindchange="onSortChange">
+      <view class="picker-card glass-soft">
+        <text class="picker-label">排序方式</text>
+        <text class="picker-value">{{sortOptions[sortIndex]}}</text>
+      </view>
+    </picker>
+  </view>
+
+  <view class="range-title">热量区间</view>
+  <scroll-view class="range-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="chip-row">
+      <view
+        wx:for="{{ranges}}"
+        wx:key="label"
+        class="filter-chip {{rangeIndex === index ? 'active' : ''}}"
+        data-index="{{index}}"
+        bindtap="onRangeTap"
+      >{{item.label}}</view>
+    </view>
+  </scroll-view>
+
+  <view class="stats-grid">
+    <view class="stat-card glass-soft">
+      <text class="stat-label">饮品数量</text>
+      <text class="stat-value">{{stats.count}}</text>
+    </view>
+    <view class="stat-card glass-soft">
+      <text class="stat-label">平均热量</text>
+      <text class="stat-value">{{stats.average}}千卡</text>
+    </view>
+    <view class="stat-card glass-soft">
+      <text class="stat-label">最高热量</text>
+      <text class="stat-value">{{stats.maximum}}千卡</text>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{!visibleDrinks.length}}">当前条件下没有饮品</view>
+
+  <view
+    wx:for="{{visibleDrinks}}"
+    wx:key="key"
+    class="drink-card glass"
+    hover-class="drink-card-pressed"
+    hover-stay-time="100"
+  >
+    <view
+      class="card-gradient"
+      style="background: linear-gradient(0deg, {{item.colorBottom}} 0%, {{item.colorMiddle}} 46%, rgba(255,255,255,0) 100%);"
+    ></view>
+    <view class="card-content">
+      <view class="drink-top">
+        <view class="drink-main">
+          <view class="rank">#{{index + 1}}</view>
+          <view>
+            <view class="drink-name">{{item.displayName}}</view>
+            <view class="drink-meta">{{item.meta}}</view>
+          </view>
+        </view>
+        <view class="metric" style="color: {{item.color}};">{{item.caloriesText}}千卡</view>
+      </view>
+      <view class="nutrition-row" wx:if="{{item.hasNutrition}}">
+        <text wx:if="{{item.sugarText}}">糖 {{item.sugarText}}</text>
+        <text wx:if="{{item.fatText}}">脂肪 {{item.fatText}}</text>
+        <text wx:if="{{item.proteinText}}">蛋白质 {{item.proteinText}}</text>
+        <text wx:if="{{item.caffeineText}}">咖啡因 {{item.caffeineText}}</text>
+      </view>
+      <view class="source-line">{{item.sourceLabel}}</view>
+    </view>
+  </view>
+
+  <button wx:if="{{hasMore}}" class="load-more" bindtap="loadMore">加载更多</button>
+  <view class="footer-note">数据仅供日常饮食参考</view>
+</view>

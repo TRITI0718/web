@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "DRINK CALORIE",
+    "navigationBarBackgroundColor": "#FFF9DF",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FAF8EB",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

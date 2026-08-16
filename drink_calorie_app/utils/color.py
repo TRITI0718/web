@@ -40,95 +40,49 @@ def interpolate_color(color1, color2, factor):
         for i in range(3)
     )
 
-    return rgb_to_hex(rgb)
+    # 保留小数精度，避免相邻热量值在取整为 HEX 时
+    # 偶然落到同一个颜色。
+    return "rgb({:.3f} {:.3f} {:.3f})".format(
+        rgb[0],
+        rgb[1],
+        rgb[2],
+    )
 
 
 def get_calorie_color(calories, max_calories):
     """
-    根据热量生成连续渐变颜色。
-
-    0 kcal   -> 浅蓝
-    低热量   -> 绿色
-    中低热量 -> 黄色
-    中热量   -> 橙色
-    高热量   -> 红色
-    最高热量 -> 深红
+    将数值按 0 到最大值线性归一化，并在相邻色标间
+    进行分段线性插值。相同数值始终得到相同颜色。
     """
-
-    if calories <= 0:
-        return "#9EDCF5"
 
     if max_calories <= 0:
         return "#9EDCF5"
 
-    ratio = calories / max_calories
+    ratio = min(
+        max(float(calories) / float(max_calories), 0.0),
+        1.0,
+    )
 
-    ratio = min(max(ratio, 0), 1)
+    color_stops = [
+        "#9EDCF5",  # 浅蓝
+        "#43A047",  # 绿
+        "#9CCC65",  # 黄绿
+        "#F4D03F",  # 黄
+        "#F39C12",  # 橙
+        "#E74C3C",  # 红
+        "#8B1E1E",  # 深红
+    ]
 
-    # 0% - 20%
-    # 绿色 -> 黄绿色
-    if ratio <= 0.20:
+    segment_count = len(color_stops) - 1
+    scaled_position = ratio * segment_count
+    segment_index = min(
+        int(scaled_position),
+        segment_count - 1,
+    )
+    segment_factor = scaled_position - segment_index
 
-        factor = ratio / 0.20
-
-        return interpolate_color(
-            "#43A047",
-            "#9CCC65",
-            factor
-        )
-
-    # 20% - 40%
-    # 黄绿色 -> 黄色
-    elif ratio <= 0.40:
-
-        factor = (
-            ratio - 0.20
-        ) / 0.20
-
-        return interpolate_color(
-            "#9CCC65",
-            "#F4D03F",
-            factor
-        )
-
-    # 40% - 60%
-    # 黄色 -> 橙色
-    elif ratio <= 0.60:
-
-        factor = (
-            ratio - 0.40
-        ) / 0.20
-
-        return interpolate_color(
-            "#F4D03F",
-            "#F39C12",
-            factor
-        )
-
-    # 60% - 80%
-    # 橙色 -> 红色
-    elif ratio <= 0.80:
-
-        factor = (
-            ratio - 0.60
-        ) / 0.20
-
-        return interpolate_color(
-            "#F39C12",
-            "#E74C3C",
-            factor
-        )
-
-    # 80% - 100%
-    # 红色 -> 深红
-    else:
-
-        factor = (
-            ratio - 0.80
-        ) / 0.20
-
-        return interpolate_color(
-            "#E74C3C",
-            "#8B1E1E",
-            factor
-        )
+    return interpolate_color(
+        color_stops[segment_index],
+        color_stops[segment_index + 1],
+        segment_factor,
+    )

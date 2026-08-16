@@ -18,15 +18,85 @@ from utils.product_manager import (
 )
 
 
+APP_DIR = Path(__file__).resolve().parent
+FAVICON_FILE = APP_DIR / "assets" / "favicon.svg"
+
+
+# ============================================================
+# 全局小范围点击水波纹（Streamlit Custom Components v2）
+# ============================================================
+
+CLICK_RIPPLE = st.components.v2.component(
+    "drink_calorie_click_ripple",
+    html='<div class="click-ripple-layer" aria-hidden="true"></div>',
+    css="""
+:host {
+    display: block;
+    width: 0;
+    height: 0;
+}
+
+.click-ripple-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.click-ripple {
+    position: fixed;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(105, 124, 54, 0.30);
+    border-radius: 50%;
+    background: rgba(195, 210, 117, 0.22);
+    box-shadow: 0 0 14px rgba(125, 148, 62, 0.14);
+    transform: translate(-50%, -50%) scale(0.12);
+    opacity: 0.9;
+    animation: click-ripple-expand 440ms ease-out forwards;
+}
+
+@keyframes click-ripple-expand {
+    to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+    }
+}
+""",
+    js="""
+export default function (component) {
+    const { parentElement } = component
+    const layer = parentElement.querySelector(".click-ripple-layer")
+    if (!layer) return
+
+    const showRipple = (event) => {
+        if (event.button !== undefined && event.button !== 0) return
+
+        const ripple = document.createElement("span")
+        ripple.className = "click-ripple"
+        ripple.style.left = `${event.clientX}px`
+        ripple.style.top = `${event.clientY}px`
+        layer.appendChild(ripple)
+        ripple.addEventListener("animationend", () => ripple.remove(), { once: true })
+    }
+
+    window.addEventListener("pointerdown", showRipple, { passive: true })
+    return () => window.removeEventListener("pointerdown", showRipple)
+}
+""",
+)
+
+
 # ============================================================
 # 1. 页面配置
 # ============================================================
 
 st.set_page_config(
     page_title="DRINK CALORIE",
-    page_icon=":material/local_cafe:",
+    page_icon=str(FAVICON_FILE),
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 
@@ -34,11 +104,7 @@ st.set_page_config(
 # 2. 项目路径
 # ============================================================
 
-BASE_DIR = (
-    Path(__file__)
-    .resolve()
-    .parent
-)
+BASE_DIR = APP_DIR
 
 CSS_FILE = (
     BASE_DIR
@@ -63,31 +129,18 @@ if CSS_FILE.exists():
     )
 
 
+CLICK_RIPPLE(
+    key="global_click_ripple",
+    width="content",
+    height="content",
+)
+
+
 # ============================================================
-# 4. 页面导航
+# 4. 页面模式
 # ============================================================
 
-with st.sidebar:
-    st.markdown(
-        """
-        <div class="sidebar-brand">
-            <div class="sidebar-brand-icon">茶</div>
-            <div>
-                <strong>饮品轻卡</strong>
-                <span>喝得明白，也喝得轻松</span>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    page = st.radio(
-        "功能",
-        [
-            "🥤 营养排行榜",
-            "📝 商品管理",
-        ],
-    )
-    st.caption("数据仅供日常饮食参考")
+page = "营养排行榜"
 
 
 # ============================================================
@@ -1403,7 +1456,7 @@ if df.empty:
 
 METRICS = {
 
-    "🔥 热量": {
+    "热量": {
         "column":
             "calories",
 
@@ -1411,7 +1464,7 @@ METRICS = {
             "千卡",
     },
 
-    "🍬 糖": {
+    "糖": {
         "column":
             "sugar",
 
@@ -1419,7 +1472,7 @@ METRICS = {
             "克",
     },
 
-    "🥛 脂肪": {
+    "脂肪": {
         "column":
             "fat",
 
@@ -1427,7 +1480,7 @@ METRICS = {
             "克",
     },
 
-    "💪 蛋白质": {
+    "蛋白质": {
         "column":
             "protein",
 
@@ -1435,7 +1488,7 @@ METRICS = {
             "克",
     },
 
-    "☕ 咖啡因": {
+    "咖啡因": {
         "column":
             "caffeine",
 
@@ -1453,6 +1506,7 @@ st.markdown(
     """
     <div class="page-hero page-hero-brand">
         <h1>DRINK CALORIE</h1>
+        <p>数据仅供参考</p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -1460,100 +1514,10 @@ st.markdown(
 
 
 # ============================================================
-# 14. 首页数据范围
+# 14. 首页数据
 # ============================================================
 
-official_heytea_mask = (
-    df["brand"].eq("喜茶")
-    & df["source_type"].str.lower().eq("official")
-)
-
-official_heytea_count = int(
-    official_heytea_mask.sum()
-)
-
-
-luckin_mask = (
-    df["brand"].eq("瑞幸")
-)
-
-luckin_count = int(
-    luckin_mask.sum()
-)
-
-
-cotti_social_mask = (
-    df["brand"].eq("库迪")
-    & df["source_type"].str.lower().eq("social_media")
-)
-
-cotti_social_count = int(
-    cotti_social_mask.sum()
-)
-
-
-scope_options = [
-    "全部饮品"
-]
-
-
-if official_heytea_count:
-
-    scope_options.append(
-        "喜茶官方数据"
-    )
-
-
-if luckin_count:
-
-    scope_options.append(
-        "瑞幸表格数据"
-    )
-
-
-if cotti_social_count:
-
-    scope_options.append(
-        "库迪社交媒体数据"
-    )
-
-
-data_scope = st.segmented_control(
-    "首页数据范围",
-    scope_options,
-    default="全部饮品",
-    label_visibility="collapsed",
-    width="stretch",
-)
-
-
-if data_scope == "喜茶官方数据":
-
-    display_df = df[official_heytea_mask].copy()
-    st.caption(
-        f"已载入 {official_heytea_count} 款喜茶官方热量数据"
-    )
-
-
-elif data_scope == "瑞幸表格数据":
-
-    display_df = df[luckin_mask].copy()
-    st.caption(
-        f"已载入 {luckin_count} 款瑞幸表格热量数据"
-    )
-
-
-elif data_scope == "库迪社交媒体数据":
-
-    display_df = df[cotti_social_mask].copy()
-    st.caption(
-        f"已载入 {cotti_social_count} 条库迪分杯型热量数据"
-    )
-
-
-else:
-
-    display_df = df.copy()
+display_df = df.copy()
 
 
 # ============================================================
@@ -1561,7 +1525,7 @@ else:
 # ============================================================
 
 keyword = st.text_input(
-    "🔎 搜索饮品",
+    "搜索",
     placeholder=(
         "例如：生椰、拿铁、抹茶、葡萄、美式..."
     ),
@@ -1657,7 +1621,7 @@ with filter_col2:
 with filter_col3:
 
     selected_metric = st.selectbox(
-        "指标营养",
+        "营养指标",
         list(
             METRICS.keys()
         ),
@@ -1734,8 +1698,8 @@ with filter_col6:
     sort_order = st.selectbox(
         "排序方式",
         [
-            "由高到低",
             "由低到高",
+            "由高到低",
         ],
     )
 
@@ -2206,7 +2170,7 @@ if filtered_df.empty:
 # ============================================================
 
 max_metric_value = (
-    filtered_df[
+    display_df[
         metric_column
     ]
     .max(
@@ -2249,31 +2213,6 @@ for rank, (_, row) in enumerate(
     color = get_calorie_color(
         value,
         max_metric_value,
-    )
-
-
-    # ========================================================
-    # 横条长度
-    # ========================================================
-
-    if max_metric_value > 0:
-
-        width = (
-            value
-            /
-            max_metric_value
-            *
-            100
-        )
-
-    else:
-
-        width = 0
-
-
-    display_width = max(
-        width,
-        1.5,
     )
 
 
@@ -2340,13 +2279,6 @@ for rank, (_, row) in enumerate(
     # 营养信息
     # ========================================================
 
-    calories_text = format_value(
-        row,
-        "calories",
-        "千卡",
-    )
-
-
     sugar_text = format_value(
         row,
         "sugar",
@@ -2411,11 +2343,6 @@ for rank, (_, row) in enumerate(
 
     calorie_max = row.get(
         "calorie_max"
-    )
-
-
-    source_badge = get_source_badge(
-        source_type
     )
 
 
@@ -2594,7 +2521,12 @@ for rank, (_, row) in enumerate(
     # ========================================================
 
     card_html = f"""
-    <div class="drink-card">
+    <div
+        class="drink-card"
+        style="
+            --metric-color:{color};
+        "
+    >
 
         <div class="drink-header">
 
@@ -2614,60 +2546,43 @@ for rank, (_, row) in enumerate(
                         {meta_text}
                     </div>
 
-                    {source_badge}
-
                 </div>
 
             </div>
 
 
-            <div
-                class="metric-big"
-                style="color:{color};"
-            >
-                {current_metric_text}
+            <div class="drink-right">
+
+                <div
+                    class="metric-big"
+                    style="color:{color};"
+                >
+                    {current_metric_text}
+                </div>
+
+                <div class="nutrition-row">
+
+                    <div class="nutrition-chip">
+                        糖 {sugar_text}
+                    </div>
+
+                    <div class="nutrition-chip">
+                        脂肪 {fat_text}
+                    </div>
+
+                    <div class="nutrition-chip">
+                        蛋白质 {protein_text}
+                    </div>
+
+                    <div class="nutrition-chip">
+                        咖啡因 {caffeine_text}
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
-
-
-        <div class="nutrition-row">
-
-            <div class="nutrition-chip">
-                🔥 {calories_text}
-            </div>
-
-            <div class="nutrition-chip">
-                🍬 {sugar_text}
-            </div>
-
-            <div class="nutrition-chip">
-                🥛 {fat_text}
-            </div>
-
-            <div class="nutrition-chip">
-                💪 {protein_text}
-            </div>
-
-            <div class="nutrition-chip">
-                ☕ {caffeine_text}
-            </div>
-
-        </div>
-
-
-        <div class="bar-background">
-
-            <div style="
-                width:{display_width}%;
-                height:100%;
-                background:{color};
-                border-radius:999px;
-            ">
-            </div>
-
-        </div>
-
 
         {ingredients_html}
 
