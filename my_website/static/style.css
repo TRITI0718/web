@@ -214,7 +214,8 @@ body {
 
 #about .section-container,
 #portfolio .section-container,
-#laboratory .section-container {
+#laboratory .section-container,
+#projects .section-container {
     position: relative;
     z-index: 1;
     flex: 1 1 960px;
@@ -488,7 +489,8 @@ body {
 @media (max-width: 820px) {
     #about,
     #portfolio,
-    #laboratory {
+    #laboratory,
+    #projects {
         flex-direction: column;
         align-items: center;
     }
@@ -769,6 +771,222 @@ body {
     letter-spacing: 0.06em;
 }
 
+/* Projects / 项目实践 */
+#projects {
+    position: relative;
+    background:
+        radial-gradient(circle at 82% 14%, rgba(194,216,227,0.22), transparent 30%),
+        linear-gradient(180deg, #ffffff, #f7fafc 92%);
+}
+
+.projects-container {
+    max-width: 1100px;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.project-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 500px;
+    border: 1px solid rgba(205,220,232,0.72);
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 10px 28px rgba(51,67,88,0.09);
+    transition: transform 0.32s cubic-bezier(.2,.8,.2,1), box-shadow 0.32s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 20px 46px rgba(51,67,88,0.16);
+}
+
+.project-card-number {
+    position: absolute;
+    z-index: 4;
+    top: 18px;
+    right: 20px;
+    color: rgba(113,137,161,0.62);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+}
+
+.project-card-copy {
+    position: relative;
+    z-index: 3;
+    padding: 28px;
+}
+
+.project-card-kicker {
+    display: block;
+    margin-bottom: 10px;
+    color: #8fa6bc;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.13em;
+}
+
+.project-card h3 {
+    margin: 0 0 13px;
+    color: #41464b;
+    font-family: "Songti SC", "STSong", "SimSun", serif;
+    font-size: clamp(1.35rem, 2.1vw, 1.85rem);
+    line-height: 1.4;
+}
+
+.project-card p {
+    margin: 0;
+    color: #666d73;
+    font-family: "Songti SC", "STSong", "SimSun", serif;
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 18px;
+}
+
+.project-tags span {
+    padding: 5px 10px;
+    border: 1px solid rgba(155,177,198,0.3);
+    border-radius: 999px;
+    background: rgba(240,246,250,0.7);
+    color: #7890a6;
+    font-size: 0.7rem;
+}
+
+.project-card--text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background:
+        radial-gradient(circle at 76% 18%, rgba(255,255,255,0.9), transparent 24%),
+        linear-gradient(145deg, rgba(234,243,249,0.96), rgba(255,255,255,0.98) 72%);
+}
+
+.project-card--blender {
+    background:
+        radial-gradient(circle at 24% 18%, rgba(205,226,240,0.72), transparent 28%),
+        linear-gradient(145deg, #f8fbfd, #edf3f7);
+}
+
+.project-card-symbol {
+    position: absolute;
+    top: 64px;
+    left: 50%;
+    color: rgba(126,156,181,0.2);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(6rem, 12vw, 9.5rem);
+    letter-spacing: -0.08em;
+    transform: translateX(-50%);
+    transition: color 0.3s ease, transform 0.45s cubic-bezier(.2,.8,.2,1);
+}
+
+.project-card:hover .project-card-symbol {
+    color: rgba(89,139,176,0.29);
+    transform: translateX(-50%) scale(1.04);
+}
+
+.project-card-symbol--nodes {
+    top: 92px;
+    width: 230px;
+    height: 150px;
+}
+
+.project-card-symbol--nodes::before,
+.project-card-symbol--nodes::after {
+    content: "";
+    position: absolute;
+    top: 72px;
+    left: 28px;
+    width: 174px;
+    height: 2px;
+    background: rgba(117,151,178,0.24);
+    transform: rotate(-18deg);
+}
+
+.project-card-symbol--nodes::after {
+    transform: rotate(22deg);
+}
+
+.project-card-symbol--nodes i {
+    position: absolute;
+    z-index: 1;
+    width: 44px;
+    height: 44px;
+    border: 2px solid rgba(117,151,178,0.32);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.6);
+}
+
+.project-card-symbol--nodes i:nth-child(1) { top: 54px; left: 0; }
+.project-card-symbol--nodes i:nth-child(2) { top: 8px; right: 0; }
+.project-card-symbol--nodes i:nth-child(3) { right: 0; bottom: 0; }
+
+.project-card--visual {
+    display: grid;
+    grid-template-rows: 58% 42%;
+}
+
+.project-card-gallery {
+    position: relative;
+    display: grid;
+    overflow: hidden;
+    background: #f3f6f8;
+}
+
+.project-card-gallery img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(.2,.8,.2,1), filter 0.35s ease;
+}
+
+.project-card:hover .project-card-gallery img {
+    transform: scale(1.025);
+    filter: saturate(1.04);
+}
+
+.project-card-gallery--phones {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    background: #ebe7cf;
+}
+
+.project-card-gallery--phones img {
+    object-position: top center;
+}
+
+.project-card-gallery--workflow {
+    grid-template-columns: 68% 32%;
+    gap: 1px;
+    background: #1d1e20;
+}
+
+.project-card-gallery--workflow img:first-child {
+    object-position: center;
+}
+
+.project-card-gallery--workflow img:last-child {
+    object-position: center;
+}
+
+.project-card--visual .project-card-copy {
+    padding: 24px 26px;
+    background: #ffffff;
+}
+
 /* 作品图片交互 */
 .img-wrapper img { transition: transform 0.45s ease, filter 0.3s ease; }
 
@@ -863,4 +1081,12 @@ body {
     }
     .lab-card .lab-card-copy h3 { font-size: 1.2rem; }
     .lab-card .lab-card-copy p { font-size: 0.76rem; line-height: 1.55; }
+    #projects.content-section { padding-left: 14px; padding-right: 14px; }
+    .project-grid { grid-template-columns: 1fr; gap: 18px; }
+    .project-card { min-height: 430px; }
+    .project-card--visual { grid-template-rows: 56% 44%; }
+    .project-card-copy { padding: 22px; }
+    .project-card h3 { font-size: 1.3rem; }
+    .project-card p { font-size: 0.82rem; line-height: 1.65; }
+    .project-card-symbol { top: 50px; }
 }

@@ -10,6 +10,7 @@ def home():
             "category_id": "character",
             "category_name": "角色设计",
             "images": [
+                {"src": "images/character/char7.jpeg", "title": "珠宝主题角色设计", },
                 {"src": "images/character/char1.jpeg", "title": "01", },
                 {"src": "images/character/char2.jpeg", "title": "02", },
                 {"src": "images/character/char3.jpeg", "title": "03", },
@@ -32,6 +33,7 @@ def home():
             "category_id": "chibi",
             "category_name": "Q版立绘",
             "images": [
+                {"src": "images/chibi/chibi3.jpeg", "title": "Q版角色立绘", },
                 {"src": "images/chibi/chibi1.jpeg", "title": "01", },
                 {"src": "images/chibi/chibi2.jpeg", "title": "02", },
 

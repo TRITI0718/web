@@ -22,6 +22,7 @@
             <a href="#about" class="hero-link">About</a>
             <a href="#portfolio" class="hero-link">Portfolio</a>
             <a href="#laboratory" class="hero-link">Laboratory</a>
+            <a href="#projects" class="hero-link">Projects</a>
         </nav>
 
         <div class="hero-keywords">
@@ -45,6 +46,7 @@
                 <a href="#about" class="is-current" aria-current="location">About</a>
                 <a href="#portfolio">Portfolio</a>
                 <a href="#laboratory">Laboratory</a>
+                <a href="#projects">Projects</a>
             </nav>
             <div class="section-container">
                 <div class="profile-card">
@@ -141,6 +143,7 @@
                     </div>
                 </div>
                 <a href="#laboratory">Laboratory</a>
+                <a href="#projects">Projects</a>
             </nav>
             <div class="section-container">
                 <div class="portfolio-header">
@@ -173,6 +176,7 @@
                 <a href="#about">About</a>
                 <a href="#portfolio">Portfolio</a>
                 <a href="#laboratory" class="is-current" aria-current="location">Laboratory</a>
+                <a href="#projects">Projects</a>
             </nav>
             <div class="section-container">
                 <h2 class="section-title">LABORATORY</h2>
@@ -199,6 +203,70 @@
                                 <p>采用固相反应法制备 (Ba₀.₉Na₀.₁)(Cu₁.₉Mn₀.₁)Se₂ 磁性半导体，完成原料配比、封管、高温烧结、压片及二次烧制。利用 XRD 分析晶体结构、晶格参数和相纯度，并通过 SQUID 磁滞回线获得矫顽力与饱和磁化强度，验证化学压力及载流子对材料磁性的调控作用。</p>
                                 <span class="lab-project-meta">实验过程 · 装置/样品 · 关键结果</span>
                             </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2.4 项目实践 -->
+        <section id="projects" class="content-section">
+            <nav class="resume-side-nav" aria-label="页面导航">
+                <a href="#about">About</a>
+                <a href="#portfolio">Portfolio</a>
+                <a href="#laboratory">Laboratory</a>
+                <a href="#projects" class="is-current" aria-current="location">Projects</a>
+            </nav>
+            <div class="section-container projects-container">
+                <h2 class="section-title">PROJECTS</h2>
+                <div class="project-grid">
+                    <article class="project-card project-card--text project-card--portfolio">
+                        <div class="project-card-number">01</div>
+                        <div class="project-card-symbol" aria-hidden="true">WQ</div>
+                        <div class="project-card-copy">
+                            <span class="project-card-kicker">WEB DESIGN · FRONTEND</span>
+                            <h3>个人作品集网站</h3>
+                            <p>围绕个人简历、角色设计、插图与实验项目构建的响应式作品集网站，包含玻璃拟态导航、作品轮盘、图片预览和交互式项目卡片。</p>
+                            <div class="project-tags"><span>Flask</span><span>HTML/CSS</span><span>Interaction</span></div>
+                        </div>
+                    </article>
+
+                    <article class="project-card project-card--text project-card--blender">
+                        <div class="project-card-number">02</div>
+                        <div class="project-card-symbol project-card-symbol--nodes" aria-hidden="true"><i></i><i></i><i></i></div>
+                        <div class="project-card-copy">
+                            <span class="project-card-kicker">BLENDER · AGENT TOOLING</span>
+                            <h3>Blender 界面翻译与 Agent 接口插件</h3>
+                            <p>面向 Blender 工作流的界面翻译与 Agent 接口扩展，连接自然语言指令和创作操作，降低复杂功能的使用门槛。</p>
+                            <div class="project-tags"><span>Blender</span><span>Python</span><span>Agent API</span></div>
+                        </div>
+                    </article>
+
+                    <article class="project-card project-card--visual">
+                        <div class="project-card-number">03</div>
+                        <div class="project-card-gallery project-card-gallery--phones">
+                            <img src="{{ url_for('static', filename='images/projects/drink-overview.png') }}" alt="饮品热量小程序首页">
+                            <img src="{{ url_for('static', filename='images/projects/drink-search.png') }}" alt="饮品热量小程序搜索结果">
+                        </div>
+                        <div class="project-card-copy">
+                            <span class="project-card-kicker">DATA · MINI PROGRAM</span>
+                            <h3>饮品热量爬虫小程序</h3>
+                            <p>聚合并整理饮品热量信息，支持搜索、品牌筛选、热量区间和排序，为移动端提供直观的营养数据浏览体验。</p>
+                            <div class="project-tags"><span>Python</span><span>Web Scraping</span><span>Mini Program</span></div>
+                        </div>
+                    </article>
+
+                    <article class="project-card project-card--visual">
+                        <div class="project-card-number">04</div>
+                        <div class="project-card-gallery project-card-gallery--workflow">
+                            <img src="{{ url_for('static', filename='images/projects/comfy-workflow.png') }}" alt="ComfyUI 配色工作流节点界面">
+                            <img src="{{ url_for('static', filename='images/projects/comfy-palette.png') }}" alt="配色工作流生成的色板">
+                        </div>
+                        <div class="project-card-copy">
+                            <span class="project-card-kicker">COMFYUI · COLOR SYSTEM</span>
+                            <h3>基于 ComfyUI 开发的配色工作流</h3>
+                            <p>通过自定义节点分析参考图片并生成多组可调配色方案，支持色系、颜色数量、比例和随机种子等参数化控制。</p>
+                            <div class="project-tags"><span>ComfyUI</span><span>Custom Nodes</span><span>Color Palette</span></div>
                         </div>
                     </article>
                 </div>
